@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>选择困难终结 — Design Demo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+/* ============================================================
+   DESIGN SYSTEM — 选择困难终结
+   参考风格：深色底板 + 卡片层级 + 紫蓝青渐变点缀
+   ============================================================ */
+
+:root {
+  --bg-root:       #0B0E17;
+  --bg-card:       #141824;
+  --bg-card-hover: #1A1F2E;
+  --bg-input:      #0E111A;
+  --border:        rgba(255,255,255,0.07);
+  --border-focus:  rgba(99,102,241,0.45);
+  --text-primary:  #F1F3F9;
+  --text-secondary:#9CA3AF;
+  --text-muted:    #5B6270;
+  --accent-start:  #6366F1;
+  --accent-mid:    #4F6EF7;
+  --accent-end:    #06B6D4;
+  --accent-gradient: linear-gradient(135deg, #6366F1, #4F6EF7 40%, #06B6D4);
+  --green:         #10B981;
+  --orange:        #F59E0B;
+  --red:           #EF4444;
+  --radius-sm:     8px;
+  --radius:        12px;
+  --radius-lg:     16px;
+  --radius-xl:     20px;
+  --shadow-card:   0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.25);
+  --shadow-lg:     0 4px 32px rgba(99,102,241,0.12), 0 8px 64px rgba(0,0,0,0.4);
+  --font:          'Inter', 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg-root);
+  color: var(--text-primary);
+  font-family: var(--font);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Layout ---- */
+.demo-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.demo-header {
+  text-align: center;
+  padding: 48px 24px 56px;
+}
+
+.demo-header h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.demo-header .subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.page-section {
+  margin-bottom: 72px;
+}
+
+.page-section:last-child { margin-bottom: 0; }
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.section-label .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+}
+
+.section-label h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---- Common Components ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: rgba(255,255,255,0.12); }
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(99,102,241,0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 24px rgba(99,102,241,0.45);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 8px 16px;
+}
+
+.btn-ghost:hover { color: var(--text-primary); }
+
+.btn-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+.btn-xs { padding: 4px 10px; font-size: 0.75rem; border-radius: var(--radius-sm); }
+
+/* ---- Tags ---- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: rgba(99,102,241,0.12);
+  color: #A5B4FC;
+  border: 1px solid rgba(99,102,241,0.2);
+}
+
+.tag.teal  { background: rgba(6,182,212,0.12);  color: #67E8F9; border-color: rgba(6,182,212,0.2); }
+.tag.green { background: rgba(16,185,129,0.12);  color: #6EE7B7; border-color: rgba(16,185,129,0.2); }
+.tag.amber { background: rgba(245,158,11,0.12);  color: #FCD34D; border-color: rgba(245,158,11,0.2); }
+.tag.pink  { background: rgba(236,72,153,0.12);  color: #F9A8D4; border-color: rgba(236,72,153,0.2); }
+.tag.slate { background: rgba(148,163,184,0.1);  color: #94A3B8; border-color: rgba(148,163,184,0.15); }
+
+.tag-close {
+  cursor: pointer;
+  opacity: 0.6;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.tag-close:hover { opacity: 1; }
+
+/* ---- Badge ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.badge-accent {
+  background: var(--accent-gradient);
+  color: #fff;
+}
+
+.badge-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+/* ---- Input ---- */
+.input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+}
+
+.input::placeholder { color: var(--text-muted); }
+
+/* ---- Slider ---- */
+.slider-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.slider-group .slider-label {
+  min-width: 80px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.slider-group input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.1);
+  outline: none;
+}
+
+.slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.4);
+  transition: box-shadow 0.2s;
+}
+
+.slider-group input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 4px 16px rgba(99,102,241,0.55);
+}
+
+.slider-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: rgba(99,102,241,0.12);
+  color: #A5B4FC;
+}
+
+/* ---- Progress Bar ---- */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--accent-gradient);
+  transition: width 0.3s;
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-width: 90px;
+  text-align: right;
+}
+
+/* ---- Divider ---- */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 24px 0;
+}
+
+/* ---- Row / Grid ---- */
+.page-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 28px;
+}
+
+.page-row.single { grid-template-columns: 1fr; max-width: 640px; margin: 0 auto; }
+
+.full-width { grid-column: 1 / -1; }
+
+/* ---- Specific Page Skins ---- */
+
+/* Home */
+.home-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.home-card::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.home-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  min-height: 28px;
+}
+
+.tags-empty {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Quiz */
+.quiz-question {
+  margin-bottom: 28px;
+}
+
+.quiz-question h3 {
+  font-size: 1.25rem;
+  margin-bottom: 6px;
+}
+
+.quiz-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+}
+
+/* Result */
+.result-hero {
+  text-align: center;
+  padding: 16px 0 28px;
+}
+
+.result-icon { font-size: 3rem; margin-bottom: 4px; }
+
+.result-winner {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.result-score {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.reason-box {
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(99,102,241,0.15);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin: 24px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.chart-wrap {
+  margin: 24px 0;
+  padding: 16px;
+  background: rgba(255,255,255,0.015);
+  border-radius: var(--radius);
+  height: 280px;
+  position: relative;
+}
+
+.chart-wrap canvas { width: 100% !important; height: 100% !important; }
+
+.result-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Score detail table */
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 0.85rem;
+}
+
+.score-table th, .score-table td {
+  padding: 10px 14px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.score-table th {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.score-table td { color: var(--text-secondary); }
+.score-table td.highlight { color: #A5B4FC; font-weight: 700; }
+
+/* History */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background: rgba(255,255,255,0.015);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all 0.2s;
+}
+
+.history-item:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255,255,255,0.14);
+}
+
+.history-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.history-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.history-options {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.history-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #A5B4FC;
+}
+
+.history-actions-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Admin */
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 12px 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-table td {
+  padding: 14px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+
+.admin-table .weight-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 28px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.weight-1 { background: rgba(148,163,184,0.12); color: #94A3B8; }
+.weight-2 { background: rgba(245,158,11,0.15); color: #FCD34D; }
+.weight-3 { background: rgba(99,102,241,0.18); color: #A5B4FC; }
+
+.admin-table .toggle {
+  width: 40px; height: 22px;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.12);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.admin-table .toggle.on {
+  background: var(--accent-gradient);
+}
+
+.admin-table .toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.25s;
+}
+
+.admin-table .toggle.on::after {
+  transform: translateX(18px);
+}
+
+.action-link {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  margin-right: 14px;
+  transition: color 0.15s;
+}
+
+.action-link:hover { color: var(--text-primary); }
+.action-link.danger:hover { color: var(--red); }
+
+.add-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255,255,255,0.015);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+.add-form .field { display: flex; flex-direction: column; gap: 6px; }
+
+.add-form .field label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.add-form .field input {
+  padding: 10px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 0.85rem;
+  outline: none;
+  width: 240px;
+}
+
+.add-form .field input:focus {
+  border-color: var(--border-focus);
+}
+
+.add-form .field input.weight-input { width: 60px; text-align: center; }
+
+/* Password modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  width: 380px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.modal-box h3 { margin-bottom: 20px; }
+
+.modal-box .input { margin-bottom: 16px; }
+
+/* Footer nav */
+.footer-nav {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* State annotations */
+.state-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border: 1px dashed rgba(255,255,255,0.1);
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .page-row { grid-template-columns: 1fr; }
+  .demo-container { padding: 16px 12px 48px; }
+  .card { padding: 20px 18px; }
+  .add-form { flex-wrap: wrap; }
+  .add-form .field input { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+
+  <!-- ======================== HEADER ======================== -->
+  <header class="demo-header">
+    <h1>🎯 选择困难终结</h1>
+    <p class="subtitle">Design Demo — 5 个主页面 · 核心状态展示 · 配色 / 组件 / 布局</p>
+  </header>
+
+  <!-- ======================== 1. HOME ======================== -->
+  <section class="page-section" id="page-home">
+    <div class="section-label">
+      <span class="dot"></span>
+      <h2>页面 1 · 首页</h2>
+      <span class="state-tag">初始状态</span>
+    </div>
+
+    <div class="page-row single">
+      <!-- 状态 A：未输入 -->
+      <div class="card home-card">
+        <div class="home-icon">🎯</div>
+        <div class="card-title">选择困难终结</div>
+        <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:20px;">
+          输入 2-10 个选项，让数据帮你做决定
+        </p>
+
+        <input class="input" type="text" placeholder="输入选项，用逗号或空格分隔，如：火锅, 烧烤, 日料" value="">
+
+        <div class="tags-row">
+          <span class="tags-empty">输入选项后将在此显示标签</span>
+        </div>
+
+        <div style="margin-top:28px;">
+          <button class="btn btn-primary btn-disabled" style="width:100%;">开始决策 →</button>
+        </div>
+
+        <div class="footer-nav">
+          <a class="btn btn-ghost btn-sm" href="#page-history">📋 历史记录</a>
+          <a class="btn btn-ghost btn-sm" href="#page-admin">⚙ 管理</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 状态 B：已输入选项（有标签） -->
+    <div style="margin-top:28px;">
+      <div class="section-label">
+        <span class="dot"></span>
+        <span style="font-size:0.85rem;color:var(--text-secondary);">状态变体：已输入选项，标签展示</span>
+      </div>
+      <div class="page-row single">
+        <div class="card home-card">
+          <div class="home-icon">🎯</div>
+          <div class="card-title">选择困难终结</div>
+          <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:20px;">
+            输入 2-10 个选项，让数据帮你做决定
+          </p>
+
+          <input class="input" type="text" value="火锅, 烧烤, 日料, 沙拉">
+
+          <div class="tags-row">
+            <span class="tag">火锅 <span class="tag-close">✕</span></span>
+            <span class="tag teal">烧烤 <span class="tag-close">✕</span></span>
+            <span class="tag green">日料 <span class="tag-close">✕</span></span>
+            <span class="tag amber">沙拉 <span class="tag-close">✕</span></span>
+          </div>
+
+          <div style="margin-top:28px;">
+            <button class="btn btn-primary" style="width:100%;">开始决策 →</button>
+          </div>
+
+          <div class="footer-nav">
+            <a class="btn btn-ghost btn-sm" href="#page-history">📋 历史记录</a>
+            <a class="btn btn-ghost btn-sm" href="#page-admin">⚙ 管理</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== 2. QUIZ ======================== -->
+  <section class="page-section" id="page-quiz">
+    <div class="section-label">
+      <span class="dot"></span>
+      <h2>页面 2 · 问答页</h2>
+      <span class="state-tag">答题中 — 第 2 题 / 共 5 题</span>
+    </div>
+
+    <div class="page-row single">
+      <div class="card">
+        <!-- Progress -->
+        <div class="progress-wrap" style="margin-bottom:28px;">
+          <div class="progress-track">
+            <div class="progress-fill" style="width:40%;"></div>
+          </div>
+          <span class="progress-text">第 2 题 / 共 5 题</span>
+        </div>
+
+        <!-- Question -->
+        <div class="quiz-question">
+          <h3>💬 你对价格敏感吗？</h3>
+          <span class="badge badge-accent">权重 ×3</span>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Sliders -->
+        <div class="quiz-sliders">
+          <div class="slider-group">
+            <span class="slider-label">🍲 火锅</span>
+            <input type="range" min="1" max="5" value="2">
+            <span class="slider-score">2</span>
+          </div>
+          <div class="slider-group">
+            <span class="slider-label">🥩 烧烤</span>
+            <input type="range" min="1" max="5" value="3">
+            <span class="slider-score">3</span>
+          </div>
+          <div class="slider-group">
+            <span class="slider-label">🍣 日料</span>
+            <input type="range" min="1" max="5" value="5">
+            <span class="slider-score" style="background:rgba(6,182,212,0.15);color:#67E8F9;">5</span>
+          </div>
+          <div class="slider-group">
+            <span class="slider-label">🥗 沙拉</span>
+            <input type="range" min="1" max="5" value="5">
+            <span class="slider-score" style="background:rgba(6,182,212,0.15);color:#67E8F9;">5</span>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:6px;font-size:0.75rem;color:var(--text-muted);display:flex;justify-content:space-between;max-width:460px;margin-left:auto;margin-right:auto;">
+          <span>1 = 非常不符合</span>
+          <span>5 = 非常符合</span>
+        </div>
+
+        <div class="quiz-nav">
+          <button class="btn btn-secondary">← 上一题</button>
+          <button class="btn btn-primary">下一题 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== 3. RESULT ======================== -->
+  <section class="page-section" id="page-result">
+    <div class="section-label">
+      <span class="dot"></span>
+      <h2>页面 3 · 结果页</h2>
+      <span class="state-tag">沙拉胜出</span>
+    </div>
+
+    <div class="page-row single">
+      <div class="card">
+        <!-- Hero -->
+        <div class="result-hero">
+          <div class="result-icon">🏆</div>
+          <div class="result-winner">沙拉</div>
+          <div class="result-score">加权总分：22 分</div>
+        </div>
+
+        <!-- Reason -->
+        <div class="reason-box">
+          <strong style="color:var(--text-primary);">推荐理由：</strong>
+          在 4 个选项中，<strong style="color:#A5B4FC;">沙拉</strong> 综合得分最高（22 分），
+          尤其在<strong style="color:#67E8F9;">「价格敏感度」</strong>方面表现突出（5 分）。
+          相比第二名日料（21 分）差距不大，可凭直觉微调。
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-wrap">
+          <canvas id="chartResult"></canvas>
+        </div>
+
+        <!-- Score detail (collapsible mock) -->
+        <details style="cursor:pointer;margin-top:8px;">
+          <summary style="color:var(--text-secondary);font-size:0.85rem;">▼ 得分明细</summary>
+          <table class="score-table" style="margin-top:12px;">
+            <thead>
+              <tr>
+                <th style="text-align:left;">问题（权重）</th>
+                <th>火锅</th><th>烧烤</th><th>日料</th><th>沙拉</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align:left;">价格敏感吗？（×3）</td>
+                <td>2</td><td>3</td><td>5</td><td class="highlight">5</td>
+              </tr>
+              <tr>
+                <td style="text-align:left;">口味重要吗？（×2）</td>
+                <td class="highlight">5</td><td>4</td><td>2</td><td>2</td>
+              </tr>
+              <tr>
+                <td style="text-align:left;">环境重要吗？（×1）</td>
+                <td>3</td><td>4</td><td>3</td><td>3</td>
+              </tr>
+              <tr style="font-weight:700;color:var(--text-primary);">
+                <td style="text-align:left;">加权总分</td>
+                <td>19</td><td>21</td><td>21</td><td class="highlight">22</td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+
+        <div class="result-actions">
+          <button class="btn btn-secondary">🔄 重新开始</button>
+          <button class="btn btn-primary">💾 保存到历史</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== 4. HISTORY ======================== -->
+  <section class="page-section" id="page-history">
+    <div class="section-label">
+      <span class="dot"></span>
+      <h2>页面 4 · 历史记录</h2>
+      <span class="state-tag">最近 10 次</span>
+    </div>
+
+    <div class="page-row single">
+      <div class="card">
+        <div class="card-title">📋 历史决策</div>
+
+        <div class="history-list">
+          <div class="history-item">
+            <div class="history-meta">
+              <span class="history-time">2026-06-10 14:32</span>
+              <span class="history-options">火锅、烧烤、日料、沙拉</span>
+            </div>
+            <div class="history-result">
+              🏆 沙拉
+              <a class="btn btn-ghost btn-xs">查看详情 →</a>
+            </div>
+          </div>
+
+          <div class="history-item">
+            <div class="history-meta">
+              <span class="history-time">2026-06-10 12:15</span>
+              <span class="history-options">爬山、看电影、逛商场、宅家</span>
+            </div>
+            <div class="history-result">
+              🏆 爬山
+              <a class="btn btn-ghost btn-xs">查看详情 →</a>
+            </div>
+          </div>
+
+          <div class="history-item">
+            <div class="history-meta">
+              <span class="history-time">2026-06-09 18:40</span>
+              <span class="history-options">商品A、商品B、商品C</span>
+            </div>
+            <div class="history-result">
+              🏆 商品B
+              <a class="btn btn-ghost btn-xs">查看详情 →</a>
+            </div>
+          </div>
+
+          <div class="history-item">
+            <div class="history-meta">
+              <span class="history-time">2026-06-09 09:10</span>
+              <span class="history-options">成都、大理、三亚、西安</span>
+            </div>
+            <div class="history-result">
+              🏆 大理
+              <a class="btn btn-ghost btn-xs">查看详情 →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="history-actions-row">
+          <button class="btn btn-secondary btn-sm">📥 导出 JSON</button>
+          <button class="btn btn-secondary btn-sm">📥 导出 CSV</button>
+          <button class="btn btn-ghost btn-sm danger" style="margin-left:auto;color:var(--red);">🗑 清空历史</button>
+        </div>
+
+        <div style="text-align:center;margin-top:20px;">
+          <a class="btn btn-ghost btn-sm" href="#page-home">← 返回首页</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== 5. ADMIN ======================== -->
+  <section class="page-section" id="page-admin">
+    <div class="section-label">
+      <span class="dot"></span>
+      <h2>页面 5 · 管理页</h2>
+      <span class="state-tag">需密码进入</span>
+    </div>
+
+    <div class="page-row single">
+      <div class="card">
+        <div class="card-title">⚙ 问题库管理</div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>问题文本</th>
+                <th>权重</th>
+                <th>启用</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>你对价格敏感吗？</td>
+                <td><span class="weight-badge weight-3">×3</span></td>
+                <td><span class="toggle on"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>口味对你来说有多重要？</td>
+                <td><span class="weight-badge weight-2">×2</span></td>
+                <td><span class="toggle on"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>用餐环境和服务重要吗？</td>
+                <td><span class="weight-badge weight-1">×1</span></td>
+                <td><span class="toggle"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>距离远近会影响你的选择吗？</td>
+                <td><span class="weight-badge weight-2">×2</span></td>
+                <td><span class="toggle on"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>健康/卡路里对你重要吗？</td>
+                <td><span class="weight-badge weight-1">×1</span></td>
+                <td><span class="toggle"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Add form -->
+        <div class="add-form">
+          <div class="field" style="flex:1;">
+            <label>新问题</label>
+            <input type="text" placeholder="输入问题文本..." style="width:100%;">
+          </div>
+          <div class="field">
+            <label>权重</label>
+            <input type="text" value="2" class="weight-input">
+          </div>
+          <button class="btn btn-primary btn-sm">+ 添加</button>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px;">
+          <a class="btn btn-ghost btn-sm" href="#page-home">← 返回首页</a>
+          <button class="btn btn-primary">💾 保存修改</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password modal (shown as static overlay) -->
+    <div style="margin-top:28px;">
+      <div class="section-label">
+        <span class="dot"></span>
+        <span style="font-size:0.85rem;color:var(--text-secondary);">入口状态：管理员密码验证</span>
+      </div>
+
+      <div style="display:flex;justify-content:center;">
+        <div class="modal-box" style="position:static;">
+          <div style="font-size:2rem;margin-bottom:8px;">🔐</div>
+          <h3>管理员验证</h3>
+          <p style="color:var(--text-secondary);font-size:0.84rem;margin-bottom:18px;">
+            请输入管理员密码以进入管理页面
+          </p>
+          <input class="input" type="password" placeholder="输入密码" value="admin" style="text-align:center;">
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-secondary" style="flex:1;">取消</button>
+            <button class="btn btn-primary" style="flex:1;">验证</button>
+          </div>
+          <p style="color:var(--text-muted);font-size:0.72rem;margin-top:14px;">
+            默认密码：admin · 5 次错误将锁定 5 分钟
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FOOTER ======================== -->
+  <div style="text-align:center;padding:48px 0 24px;color:var(--text-muted);font-size:0.78rem;">
+    🎯 选择困难终结 · Design Demo · 纯静态展示（配色 / 组件 / 布局 / 状态）
+  </div>
+
+</div>
+
+<!-- ======================== CHART INIT ======================== -->
+<script>
+(function() {
+  const ctx = document.getElementById('chartResult');
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['火锅', '烧烤', '日料', '沙拉'],
+      datasets: [{
+        label: '加权总分',
+        data: [19, 21, 21, 22],
+        backgroundColor: [
+          'rgba(99,102,241,0.55)',
+          'rgba(99,102,241,0.55)',
+          'rgba(99,102,241,0.55)',
+          'rgba(6,182,212,0.75)'
+        ],
+        borderColor: [
+          'rgba(99,102,241,0.8)',
+          'rgba(99,102,241,0.8)',
+          'rgba(99,102,241,0.8)',
+          'rgba(6,182,212,1)'
+        ],
+        borderWidth: 1.5,
+        borderRadius: 8,
+        borderSkipped: false,
+        barPercentage: 0.55,
+        categoryPercentage: 0.7
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1F2E',
+          titleColor: '#F1F3F9',
+          bodyColor: '#9CA3AF',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          padding: 12,
+          displayColors: false,
+          callbacks: {
+            label: ctx => `得分：${ctx.raw} 分`
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#9CA3AF', font: { size: 13 } },
+          grid: { display: false },
+          border: { color: 'rgba(255,255,255,0.06)' }
+        },
+        y: {
+          beginAtZero: true,
+          max: 30,
+          ticks: {
+            color: '#5B6270',
+            font: { size: 11 },
+            stepSize: 5,
+            callback: v => v + ' 分'
+          },
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          border: { color: 'rgba(255,255,255,0.06)' }
+        }
+      },
+      animation: { duration: 600, easing: 'easeOutQuart' }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
