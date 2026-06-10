@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>选择困难终结</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+  <div id="app" class="demo-container">
+
+    <!-- ========== 首页 ========== -->
+    <section id="page-home" class="page-section page-row single">
+      <div class="card card-cream">
+        <span class="hero-emoji">🎯</span>
+        <div class="page-title">选择困难终结</div>
+        <div class="page-subtitle">选择场景，输入 2-10 个选项，让数据帮你做决定</div>
+
+        <!-- 场景选择器 -->
+        <div class="scene-selector" id="scene-selector">
+          <button class="scene-btn" data-category="food">🍽️ 餐饮</button>
+          <button class="scene-btn" data-category="shopping">🛒 购物</button>
+          <button class="scene-btn" data-category="travel">✈️ 旅行</button>
+          <button class="scene-btn active" data-category="general">📋 通用</button>
+        </div>
+
+        <input
+          id="option-input"
+          class="input"
+          type="text"
+          placeholder="输入选项，用逗号分隔，如：选项A, 选项B, 选项C"
+          autofocus
+        >
+
+        <div id="tags-container" class="tags-row">
+          <span class="tags-empty">输入选项后将在此显示标签</span>
+        </div>
+
+        <div class="mt-28">
+          <button id="btn-start" class="btn btn-primary btn-block btn-disabled">
+            开始决策 →
+          </button>
+        </div>
+
+        <div class="header-actions">
+          <button id="btn-goto-history" class="btn btn-ghost btn-sm">📋 历史记录</button>
+          <button id="btn-goto-admin" class="btn btn-ghost btn-sm">⚙ 管理问题库</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 问答页 ========== -->
+    <section id="page-quiz" class="page-section page-row single" style="display:none;">
+      <div class="card">
+        <div class="progress-wrap mb-16">
+          <div class="progress-track">
+            <div id="progress-fill" class="progress-fill" style="width:0%;"></div>
+          </div>
+          <span id="progress-text" class="progress-text">第 1 / 5 题</span>
+        </div>
+
+        <span id="quiz-weight-badge" class="badge badge-accent badge-lg mb-12" style="display:inline-flex;">权重 ×3</span>
+        <div id="quiz-question-text" class="page-title mb-12">问题文本加载中...</div>
+        <div class="page-subtitle">拖动滑块为每个选项打分</div>
+
+        <hr class="divider-dashed">
+
+        <div id="quiz-sliders-container">
+          <!-- 滑块由 JS 动态渲染 -->
+        </div>
+
+        <div class="slider-hint">
+          <span>1 = 非常不符合</span>
+          <span>5 = 非常符合</span>
+        </div>
+
+        <div class="flex-between mt-28">
+          <button id="btn-prev" class="btn btn-ghost btn-sm">← 上一题</button>
+          <button id="btn-next" class="btn btn-primary">下一题 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 结果页 ========== -->
+    <section id="page-result" class="page-section page-row wide" style="display:none;">
+      <div class="card">
+        <div class="result-hero">
+          <span class="result-icon">🏆</span>
+          <span id="result-winner" class="result-winner">--</span>
+          <div id="result-score" class="result-score">加权总分 · -- 分</div>
+          <div id="result-tie-badge" style="display:none;margin-top:8px;">
+            <span class="badge badge-accent">🎲 随机选出（同分）</span>
+          </div>
+        </div>
+
+        <!-- 平局时：换一个按钮 -->
+        <div id="result-tie-actions" class="flex-center" style="display:none;margin:12px 0;">
+          <button id="btn-reroll" class="btn btn-sm btn-pink">🎲 换一个</button>
+        </div>
+
+        <!-- 推荐理由 -->
+        <div id="result-reason" class="reason-box">
+          <strong>📝 推荐理由</strong><br>
+          <span id="reason-text">--</span>
+        </div>
+
+        <!-- 图表 -->
+        <div class="chart-wrap">
+          <canvas id="chartResult"></canvas>
+        </div>
+
+        <!-- 得分明细 -->
+        <details>
+          <summary>▼ 点击展开得分明细</summary>
+          <div class="admin-table-wrap">
+            <table id="score-detail-table" class="score-table">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </details>
+
+        <div class="flex-center mt-24">
+          <button id="btn-restart" class="btn btn-ghost btn-sm">🔄 重新开始</button>
+          <button id="btn-save-history" class="btn btn-primary">💾 保存到历史</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 历史页 ========== -->
+    <section id="page-history" class="page-section page-row single" style="display:none;">
+      <div class="card">
+        <div class="section-title">📋 历史决策</div>
+        <div class="page-subtitle">最近做出的选择，点击可查看详情</div>
+
+        <div id="history-list" class="history-list mt-20">
+          <!-- JS 动态渲染 -->
+        </div>
+
+        <div class="flex-between mt-24">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button id="btn-export-json" class="btn btn-sm">📥 导出 JSON</button>
+            <button id="btn-export-csv" class="btn btn-sm">📥 导出 CSV</button>
+          </div>
+          <button id="btn-clear-history" class="btn btn-sm btn-ghost" style="color:#D94A3A;">🗑 清空历史</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 管理页 ========== -->
+    <section id="page-admin" class="page-section page-row single" style="display:none;">
+      <div class="card">
+        <div class="section-title">⚙ 问题库管理</div>
+        <div class="page-subtitle">增删改查问题，调整权重、场景分类与启用状态</div>
+
+        <!-- 分类筛选 -->
+        <div class="scene-selector" id="admin-category-filter" style="margin-bottom:16px;">
+          <button class="scene-btn scene-btn-sm active" data-category="all">全部</button>
+          <button class="scene-btn scene-btn-sm" data-category="food">🍽️ 餐饮</button>
+          <button class="scene-btn scene-btn-sm" data-category="shopping">🛒 购物</button>
+          <button class="scene-btn scene-btn-sm" data-category="travel">✈️ 旅行</button>
+          <button class="scene-btn scene-btn-sm" data-category="general">📋 通用</button>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>场景</th>
+                <th>问题文本</th>
+                <th>权重</th>
+                <th>启用</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="admin-questions-tbody">
+              <!-- JS 动态渲染 -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 添加新问题表单 -->
+        <div class="add-form">
+          <div class="field">
+            <label>场景</label>
+            <select id="new-question-category" style="padding:11px 14px;border:var(--stroke) solid var(--black);border-radius:var(--radius-full);font-family:var(--font-body);font-size:0.86rem;font-weight:500;outline:none;background:#fff;">
+              <option value="food">🍽️ 餐饮</option>
+              <option value="shopping">🛒 购物</option>
+              <option value="travel">✈️ 旅行</option>
+              <option value="general" selected>📋 通用</option>
+            </select>
+          </div>
+          <div class="field" style="flex:1;">
+            <label>新问题</label>
+            <input id="new-question-text" type="text" placeholder="输入问题文本..." style="width:100%;">
+          </div>
+          <div class="field">
+            <label>权重</label>
+            <input id="new-question-weight" type="number" min="1" max="3" value="2" class="weight-input">
+          </div>
+          <button id="btn-add-question" class="btn btn-primary btn-sm">+ 添加</button>
+        </div>
+
+        <div class="flex-between mt-28">
+          <button id="btn-admin-back" class="btn btn-ghost btn-sm">← 返回首页</button>
+          <button id="btn-admin-save" class="btn btn-primary">💾 保存修改</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="js/utils/constants.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/utils/parser.js"></script>
+  <script src="js/utils/sanitizer.js"></script>
+  <script src="js/services/questionService.js"></script>
+  <script src="js/services/historyService.js"></script>
+  <script src="js/services/scoreEngine.js"></script>
+  <script src="js/services/reasonGenerator.js"></script>
+  <script src="js/services/exportService.js"></script>
+  <script src="js/components/progressBar.js"></script>
+  <script src="js/components/slider.js"></script>
+  <script src="js/components/barChart.js"></script>
+  <script src="js/components/modal.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
