@@ -1,4 +1,4 @@
-"""认证模块：注册 / 登录 / JWT"""
+"""认证模块：注册 / 登录 / JWT / 用户管理"""
 import bcrypt
 import jwt
 import datetime
@@ -22,7 +22,6 @@ def make_token(user_id, username, role):
 
 
 def login_required(f):
-    """装饰器：要求登录"""
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('Authorization', '').replace('Bearer ', '')
@@ -30,6 +29,12 @@ def login_required(f):
             return jsonify({'error': '请先登录'}), 401
         try:
             payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+            db = get_db()
+            user = db.execute('SELECT id, banned FROM users WHERE id = ?', (payload['user_id'],)).fetchone()
+            if not user:
+                return jsonify({'error': '用户不存在'}), 401
+            if user['banned']:
+                return jsonify({'error': '账号已被封禁'}), 403
             request.user = payload
         except jwt.ExpiredSignatureError:
             return jsonify({'error': '登录已过期，请重新登录'}), 401
@@ -40,7 +45,6 @@ def login_required(f):
 
 
 def admin_required(f):
-    """装饰器：要求管理员"""
     @wraps(f)
     @login_required
     def decorated(*args, **kwargs):
@@ -50,6 +54,7 @@ def admin_required(f):
     return decorated
 
 
+# ── 注册 ──
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -69,7 +74,6 @@ def register():
         return jsonify({'error': '用户名已被注册'}), 409
 
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-    # 首个注册用户或 admin 用户自动赋予 admin 角色
     total_users = db.execute('SELECT COUNT(*) as cnt FROM users').fetchone()['cnt']
     role = 'admin' if username == 'admin' or total_users == 0 else 'user'
 
@@ -84,6 +88,7 @@ def register():
     return jsonify({'token': token, 'user': {'id': user_id, 'username': username, 'role': role}}), 201
 
 
+# ── 登录 ──
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -98,6 +103,9 @@ def login():
     if not user:
         return jsonify({'error': '用户名或密码错误'}), 401
 
+    if user['banned']:
+        return jsonify({'error': '账号已被封禁，请联系管理员'}), 403
+
     if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
         return jsonify({'error': '用户名或密码错误'}), 401
 
@@ -108,7 +116,43 @@ def login():
     })
 
 
+# ── 当前用户信息 ──
 @auth_bp.route('/me', methods=['GET'])
 @login_required
 def me():
     return jsonify({'user': request.user})
+
+
+# ── 管理员：用户列表 ──
+@auth_bp.route('/admin/users', methods=['GET'])
+@admin_required
+def list_users():
+    db = get_db()
+    rows = db.execute('SELECT id, username, role, banned, created_at FROM users ORDER BY id').fetchall()
+    users = [dict(r) for r in rows]
+    return jsonify({'users': users})
+
+
+# ── 管理员：封禁用户 ──
+@auth_bp.route('/admin/users/<int:user_id>/ban', methods=['PUT'])
+@admin_required
+def ban_user(user_id):
+    db = get_db()
+    user = db.execute('SELECT id, role FROM users WHERE id = ?', (user_id,)).fetchone()
+    if not user:
+        return jsonify({'error': '用户不存在'}), 404
+    if user['role'] == 'admin':
+        return jsonify({'error': '不能封禁管理员'}), 403
+    db.execute('UPDATE users SET banned = 1 WHERE id = ?', (user_id,))
+    db.commit()
+    return jsonify({'ok': True})
+
+
+# ── 管理员：解封用户 ──
+@auth_bp.route('/admin/users/<int:user_id>/unban', methods=['PUT'])
+@admin_required
+def unban_user(user_id):
+    db = get_db()
+    db.execute('UPDATE users SET banned = 0 WHERE id = ?', (user_id,))
+    db.commit()
+    return jsonify({'ok': True})

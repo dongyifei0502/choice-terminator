@@ -814,6 +814,55 @@ details summary {
   border-width: var(--stroke-thin);
 }
 
+/* ---- Admin Tabs ---- */
+.admin-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.admin-tab {
+  flex: 1;
+  padding: 10px 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: var(--gray-mid);
+}
+
+.admin-tab + .admin-tab {
+  border-left: var(--stroke-thin) solid var(--black);
+}
+
+.admin-tab.active {
+  background: var(--cream-deep);
+  color: var(--black);
+}
+
+.admin-tab:hover {
+  background: var(--yellow-pale);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.status-badge.active { background: #C8ECD4; color: #1a6b30; }
+.status-badge.banned { background: #FFE0DA; color: #B33A2A; }
+
 /* ---- User Bar ---- */
 .user-bar {
   display: flex;

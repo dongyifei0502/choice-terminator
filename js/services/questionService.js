@@ -1,93 +1,58 @@
 const QuestionService = {
-  /**
-   * 从 Store.questions 中选取本轮题目：
-   * 1. 筛选 enabled === true
-   * 2. 按 category 过滤（如果指定）
-   * 3. 按 weight 降序排列
-   * 4. 取前 MAX_QUESTIONS_PER_QUIZ 题
-   * @param {string} category - 场景分类，可选
-   * @returns {object[]}
-   */
   selectQuestions(category) {
-    let pool = Store.questions.filter(q => q.enabled);
+    var pool = Store.questions.filter(function(q) { return q.enabled; });
     if (category) {
-      pool = pool.filter(q => q.category === category);
+      pool = pool.filter(function(q) { return q.category === category; });
     }
-    // 如果该分类下没有题目，回退到全部启用的题目
     if (pool.length === 0) {
-      pool = Store.questions.filter(q => q.enabled);
+      pool = Store.questions.filter(function(q) { return q.enabled; });
     }
-    pool.sort((a, b) => b.weight - a.weight);
+    pool.sort(function(a, b) { return b.weight - a.weight; });
     return pool.slice(0, CONSTANTS.MAX_QUESTIONS_PER_QUIZ);
   },
 
-  /**
-   * 获取所有分类
-   * @returns {string[]}
-   */
   getCategories() {
-    const cats = new Set(Store.questions.map(q => q.category));
-    return [...cats].filter(Boolean);
+    var cats = [];
+    Store.questions.forEach(function(q) { if (cats.indexOf(q.category) === -1) cats.push(q.category); });
+    return cats;
   },
 
-  /**
-   * 从 questions.json 加载问题到 Store
-   * 优先 localStorage，其次 fetch JSON 文件，最后默认数据
-   */
   async loadQuestions() {
-    // 优先从 localStorage 加载
+    // 优先 localStorage（离线兜底）
     try {
-      const raw = localStorage.getItem(CONSTANTS.STORAGE_KEY_QUESTIONS);
+      var raw = localStorage.getItem(CONSTANTS.STORAGE_KEY_QUESTIONS);
       if (raw) {
-        const data = JSON.parse(raw);
-        if (data && data.length > 0) {
-          Store.questions = data;
-          return;
-        }
+        var data = JSON.parse(raw);
+        if (data && data.length > 0) { Store.questions = data; return; }
       }
-    } catch (e) {
-      console.warn('无法从 localStorage 加载问题');
-    }
+    } catch (e) {}
 
-    // 其次从 JSON 文件加载
+    // 本地 JSON 兜底
     try {
-      const resp = await fetch('data/questions.json');
-      const data = await resp.json();
-      Store.questions = data.questions || [];
+      var resp = await fetch('data/questions.json');
+      var json = await resp.json();
+      Store.questions = (json.questions || []).map(function(q) {
+        return { id: q.id, category: q.category, text: q.text, weight: q.weight, enabled: q.enabled !== false, createdAt: q.createdAt || q.created_at, user_id: q.user_id || null };
+      });
     } catch (e) {
-      console.warn('无法加载 questions.json，使用默认问题');
       Store.questions = getDefaultQuestions();
     }
   },
 
-  /**
-   * 新增问题
-   */
   addQuestion(text, weight, category) {
-    const id = CONSTANTS.QUESTION_ID_PREFIX + String(Store.questions.length + 1).padStart(3, '0');
-    let finalId = id;
-    let counter = Store.questions.length + 1;
-    while (Store.questions.some(q => q.id === finalId)) {
-      counter++;
+    var counter = Store.questions.length + 1;
+    var finalId;
+    do {
       finalId = CONSTANTS.QUESTION_ID_PREFIX + String(counter).padStart(3, '0');
-    }
-    const newQ = {
-      id: finalId,
-      category: category || 'general',
-      text: text,
-      weight: weight,
-      enabled: true,
-      createdAt: new Date().toISOString()
-    };
+      counter++;
+    } while (Store.questions.some(function(q) { return q.id === finalId; }));
+    var newQ = { id: finalId, category: category || 'general', text: text, weight: weight, enabled: true, createdAt: new Date().toISOString(), user_id: Store.user.isLoggedIn ? -1 : null };
     Store.questions.push(newQ);
     return newQ;
   },
 
-  /**
-   * 更新问题
-   */
   updateQuestion(id, updates) {
-    const q = Store.questions.find(q => q.id === id);
+    var q = Store.questions.find(function(q) { return q.id === id; });
     if (!q) return false;
     if (updates.text !== undefined) q.text = updates.text;
     if (updates.weight !== undefined) q.weight = updates.weight;
@@ -96,34 +61,22 @@ const QuestionService = {
     return true;
   },
 
-  /**
-   * 删除问题
-   */
   deleteQuestion(id) {
-    const idx = Store.questions.findIndex(q => q.id === id);
+    var idx = Store.questions.findIndex(function(q) { return q.id === id; });
     if (idx === -1) return false;
     Store.questions.splice(idx, 1);
     return true;
   },
 
-  /**
-   * 保存问题到 localStorage
-   */
   saveQuestions() {
     try {
       localStorage.setItem(CONSTANTS.STORAGE_KEY_QUESTIONS, JSON.stringify(Store.questions));
       localStorage.setItem(CONSTANTS.STORAGE_KEY_BACKUP, JSON.stringify(Store.questions));
       return true;
-    } catch (e) {
-      console.warn('无法保存问题到 localStorage', e);
-      return false;
-    }
+    } catch (e) { return false; }
   }
 };
 
-/**
- * 硬编码的默认问题（fetch 失败时的兜底）
- */
 function getDefaultQuestions() {
   return [
     { id: 'q001', category: 'food', text: '你对价格敏感吗？', weight: 3, enabled: true, createdAt: '2026-06-10T12:00:00+08:00' },

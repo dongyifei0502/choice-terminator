@@ -161,43 +161,65 @@
     <!-- ========== 管理页 ========== -->
     <section id="page-admin" class="page-section page-row single" style="display:none;">
       <div class="card">
-        <div class="section-title">⚙ 问题库管理</div>
-        <div class="page-subtitle">增删改查问题，调整权重、场景分类与启用状态</div>
-        <div class="scene-selector" id="admin-category-filter" style="margin-bottom:16px;">
-          <button class="scene-btn scene-btn-sm active" data-category="all">全部</button>
-          <button class="scene-btn scene-btn-sm" data-category="food">🍽️ 餐饮</button>
-          <button class="scene-btn scene-btn-sm" data-category="shopping">🛒 购物</button>
-          <button class="scene-btn scene-btn-sm" data-category="travel">✈️ 旅行</button>
-          <button class="scene-btn scene-btn-sm" data-category="general">📋 通用</button>
+        <!-- 管理 Tabs -->
+        <div class="admin-tabs" id="admin-tabs">
+          <button class="admin-tab active" data-tab="questions">📋 问题库管理</button>
+          <button class="admin-tab" data-tab="users" id="tab-users" style="display:none;">👥 用户管理</button>
         </div>
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr><th>#</th><th>场景</th><th>问题文本</th><th>权重</th><th>启用</th><th>操作</th></tr>
-            </thead>
-            <tbody id="admin-questions-tbody"></tbody>
-          </table>
+
+        <!-- 问题管理面板 -->
+        <div id="admin-panel-questions">
+          <div class="page-subtitle">增删改查问题，调整权重、场景分类与启用状态</div>
+          <div class="scene-selector" id="admin-category-filter" style="margin-bottom:16px;">
+            <button class="scene-btn scene-btn-sm active" data-category="all">全部</button>
+            <button class="scene-btn scene-btn-sm" data-category="food">🍽️ 餐饮</button>
+            <button class="scene-btn scene-btn-sm" data-category="shopping">🛒 购物</button>
+            <button class="scene-btn scene-btn-sm" data-category="travel">✈️ 旅行</button>
+            <button class="scene-btn scene-btn-sm" data-category="general">📋 通用</button>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr><th>#</th><th>来源</th><th>场景</th><th>问题文本</th><th>权重</th><th>启用</th><th>操作</th></tr>
+              </thead>
+              <tbody id="admin-questions-tbody"></tbody>
+            </table>
+          </div>
+          <div class="add-form">
+            <div class="field">
+              <label>场景</label>
+              <select id="new-question-category" style="padding:11px 14px;border:var(--stroke) solid var(--black);border-radius:var(--radius-full);font-family:var(--font-body);font-size:0.86rem;font-weight:500;outline:none;background:#fff;">
+                <option value="food">🍽️ 餐饮</option>
+                <option value="shopping">🛒 购物</option>
+                <option value="travel">✈️ 旅行</option>
+                <option value="general" selected>📋 通用</option>
+              </select>
+            </div>
+            <div class="field" style="flex:1;">
+              <label>新问题</label>
+              <input id="new-question-text" type="text" placeholder="输入问题文本..." style="width:100%;">
+            </div>
+            <div class="field">
+              <label>权重</label>
+              <input id="new-question-weight" type="number" min="1" max="3" value="2" class="weight-input">
+            </div>
+            <button id="btn-add-question" class="btn btn-primary btn-sm">+ 添加</button>
+          </div>
         </div>
-        <div class="add-form">
-          <div class="field">
-            <label>场景</label>
-            <select id="new-question-category" style="padding:11px 14px;border:var(--stroke) solid var(--black);border-radius:var(--radius-full);font-family:var(--font-body);font-size:0.86rem;font-weight:500;outline:none;background:#fff;">
-              <option value="food">🍽️ 餐饮</option>
-              <option value="shopping">🛒 购物</option>
-              <option value="travel">✈️ 旅行</option>
-              <option value="general" selected>📋 通用</option>
-            </select>
+
+        <!-- 用户管理面板（仅管理员可见） -->
+        <div id="admin-panel-users" style="display:none;">
+          <div class="page-subtitle">查看、封禁 / 解封用户</div>
+          <div class="admin-table-wrap mt-12">
+            <table class="admin-table">
+              <thead>
+                <tr><th>ID</th><th>用户名</th><th>角色</th><th>状态</th><th>注册时间</th><th>操作</th></tr>
+              </thead>
+              <tbody id="admin-users-tbody"></tbody>
+            </table>
           </div>
-          <div class="field" style="flex:1;">
-            <label>新问题</label>
-            <input id="new-question-text" type="text" placeholder="输入问题文本..." style="width:100%;">
-          </div>
-          <div class="field">
-            <label>权重</label>
-            <input id="new-question-weight" type="number" min="1" max="3" value="2" class="weight-input">
-          </div>
-          <button id="btn-add-question" class="btn btn-primary btn-sm">+ 添加</button>
         </div>
+
         <div class="flex-between mt-28">
           <button id="btn-admin-back" class="btn btn-ghost btn-sm">← 返回首页</button>
           <button id="btn-admin-save" class="btn btn-primary">💾 保存修改</button>

@@ -119,7 +119,7 @@
 
   function updateAdminButton() {
     var btn = document.getElementById('btn-goto-admin');
-    if (btn) btn.style.display = (Store.user.isLoggedIn && Store.user.role === 'admin') ? '' : 'none';
+    if (btn) btn.style.display = Store.user.isLoggedIn ? '' : 'none';
   }
 
   // ==================== 登录/注册页 ====================
@@ -509,40 +509,64 @@
     Store.history = records;
   };
 
-  // ==================== 管理页（仅管理员可见） ====================
+  // ==================== 管理页（登录用户可管问题库，管理员额外管用户） ====================
 
   var adminFilterCategory = 'all';
+  var adminTab = 'questions';
 
   function initAdmin() {
-    // 权限检查
-    if (!Store.user.isLoggedIn || Store.user.role !== 'admin') {
-      alert('需要管理员权限，请使用管理员账号登录');
-      Router.navigate('home'); return;
+    if (!Store.user.isLoggedIn) {
+      alert('请先登录');
+      Router.navigate('auth'); return;
     }
+
+    // 管理员可见用户管理 tab
+    var usersTab = document.getElementById('tab-users');
+    if (usersTab) usersTab.style.display = Store.user.role === 'admin' ? '' : 'none';
+
+    // Tab 切换
+    document.querySelectorAll('.admin-tab').forEach(function(t) {
+      t.onclick = function() {
+        adminTab = this.dataset.tab;
+        document.querySelectorAll('.admin-tab').forEach(function(x) { x.classList.remove('active'); });
+        this.classList.add('active');
+        document.getElementById('admin-panel-questions').style.display = adminTab === 'questions' ? '' : 'none';
+        document.getElementById('admin-panel-users').style.display = adminTab === 'users' ? '' : 'none';
+        document.getElementById('btn-admin-save').style.display = adminTab === 'questions' ? '' : 'none';
+        if (adminTab === 'users') renderUserTable();
+        if (adminTab === 'questions') renderAdminTable();
+      };
+    });
+
     showAdminPanel();
   }
 
   function showAdminPanel() {
+    adminTab = 'questions';
+    document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.tab === 'questions'); });
+    document.getElementById('admin-panel-questions').style.display = '';
+    document.getElementById('admin-panel-users').style.display = 'none';
+    document.getElementById('btn-admin-save').style.display = '';
     renderAdminTable();
 
     document.getElementById('btn-admin-back').onclick = function() { Router.navigate('home'); };
 
     document.getElementById('btn-admin-save').onclick = function() {
-      // 云端保存
       if (Store.user.isLoggedIn) {
-        ApiService.saveQuestions(Store.questions).then(function() {
+        ApiService.saveQuestions(Store.questions.filter(function(q) { return !q.user_id; })).then(function() {
+          QuestionService.saveQuestions();
           alert('已保存修改（已同步到云端）');
-          QuestionService.saveQuestions(); // 本地备份
         }).catch(function() {
           QuestionService.saveQuestions();
           alert('已保存到本地（云端同步失败）');
         });
       } else {
-        var ok = QuestionService.saveQuestions();
-        alert(ok ? '已保存修改' : '保存失败');
+        QuestionService.saveQuestions();
+        alert('已保存修改');
       }
     };
 
+    // 分类筛选
     var filterEl = document.getElementById('admin-category-filter');
     if (filterEl) {
       filterEl.querySelectorAll('.scene-btn').forEach(function(btn) {
@@ -555,6 +579,7 @@
       });
     }
 
+    // 添加问题
     document.getElementById('btn-add-question').onclick = function() {
       var catEl = document.getElementById('new-question-category');
       var textEl = document.getElementById('new-question-text');
@@ -567,14 +592,30 @@
       if (Store.questions.some(function(q) { return q.text === text && q.category === category; })) {
         alert('该场景下已存在相同问题'); return;
       }
-      if (weight < CONSTANTS.WEIGHT_MIN || weight > CONSTANTS.WEIGHT_MAX) {
-        alert('权重范围为 ' + CONSTANTS.WEIGHT_MIN + '-' + CONSTANTS.WEIGHT_MAX); return;
-      }
+      if (weight < 1 || weight > 3) { alert('权重范围为 1-3'); return; }
 
-      QuestionService.addQuestion(text, weight, category);
-      textEl.value = '';
-      weightEl.value = '2';
-      renderAdminTable();
+      // 云端添加
+      if (Store.user.isLoggedIn) {
+        ApiService._fetch('POST', '/api/questions', { category: category, text: text, weight: weight }).then(function(data) {
+          Store.questions.push({ id: data.id, category: category, text: text, weight: weight, enabled: true, createdAt: new Date().toISOString(), user_id: Store.user.id || -1 });
+          QuestionService.saveQuestions();
+          textEl.value = '';
+          weightEl.value = '2';
+          renderAdminTable();
+        }).catch(function(e) {
+          QuestionService.addQuestion(text, weight, category);
+          QuestionService.saveQuestions();
+          textEl.value = '';
+          weightEl.value = '2';
+          renderAdminTable();
+        });
+      } else {
+        QuestionService.addQuestion(text, weight, category);
+        QuestionService.saveQuestions();
+        textEl.value = '';
+        weightEl.value = '2';
+        renderAdminTable();
+      }
     };
   }
 
@@ -588,17 +629,22 @@
     }
 
     var CAT_LABELS = { food: '🍽️ 餐饮', shopping: '🛒 购物', travel: '✈️ 旅行', general: '📋 通用' };
+    var isAdmin = Store.user.role === 'admin';
 
     tbody.innerHTML = questions.map(function(q, i) {
+      var source = q.user_id ? '自定义' : '系统';
+      var sourceColor = q.user_id ? 'color:#7A7A7A;' : 'color:#1A1A1A;';
+      var canEdit = isAdmin || q.user_id;
+      var canDelete = isAdmin || q.user_id;
       return '<tr>' +
         '<td>' + (i + 1) + '</td>' +
+        '<td style="font-size:0.74rem;' + sourceColor + '">' + source + '</td>' +
         '<td>' + (CAT_LABELS[q.category] || q.category) + '</td>' +
         '<td style="font-weight:700;">' + escapeHTML(q.text) + '</td>' +
         '<td><span class="weight-badge weight-' + q.weight + '">×' + q.weight + '</span></td>' +
         '<td><span class="toggle' + (q.enabled ? ' on' : '') + '" data-toggle-id="' + q.id + '"></span></td>' +
-        '<td>' +
-          '<span class="action-link" data-edit-id="' + q.id + '">编辑</span>' +
-          '<span class="action-link danger" data-delete-id="' + q.id + '">删除</span>' +
+        '<td>' + (canEdit ? '<span class="action-link" data-edit-id="' + q.id + '">编辑</span>' : '') +
+          (canDelete ? '<span class="action-link danger" data-delete-id="' + q.id + '">删除</span>' : '') +
         '</td>' +
       '</tr>';
     }).join('');
@@ -607,7 +653,13 @@
       toggle.onclick = function() {
         var id = this.dataset.toggleId;
         var q = Store.questions.find(function(q) { return q.id === id; });
-        if (q) { q.enabled = !q.enabled; this.classList.toggle('on', q.enabled); }
+        if (!q) return;
+        if (!isAdmin && !q.user_id) { alert('系统题目不可修改'); return; }
+        q.enabled = !q.enabled;
+        this.classList.toggle('on', q.enabled);
+        if (Store.user.isLoggedIn) {
+          ApiService._fetch('PUT', '/api/questions/' + id, { enabled: q.enabled, text: q.text, weight: q.weight, category: q.category }).catch(function(){});
+        }
       };
     });
 
@@ -616,6 +668,7 @@
         var id = this.dataset.editId;
         var q = Store.questions.find(function(q) { return q.id === id; });
         if (!q) return;
+        if (!isAdmin && !q.user_id) { alert('系统题目不可修改'); return; }
 
         var newText = prompt('修改问题文本：', q.text);
         if (newText === null) return;
@@ -634,6 +687,9 @@
         var validCat = catKeys.indexOf(newCat) !== -1 ? newCat : q.category;
 
         QuestionService.updateQuestion(id, { text: trimmed, weight: newWeight, category: validCat });
+        if (Store.user.isLoggedIn) {
+          ApiService._fetch('PUT', '/api/questions/' + id, { text: trimmed, weight: newWeight, category: validCat, enabled: q.enabled }).catch(function(){});
+        }
         renderAdminTable();
       };
     });
@@ -641,16 +697,73 @@
     tbody.querySelectorAll('[data-delete-id]').forEach(function(link) {
       link.onclick = function() {
         var id = this.dataset.deleteId;
-        var enabledCount = Store.questions.filter(function(q) { return q.enabled; }).length;
-        var targetQ = Store.questions.find(function(q) { return q.id === id; });
-        if (targetQ && targetQ.enabled && enabledCount <= 1) {
-          alert('至少需要 1 个启用的题目，无法删除'); return;
-        }
+        var q = Store.questions.find(function(q) { return q.id === id; });
+        if (!q) return;
+        if (!isAdmin && !q.user_id) { alert('系统题目不可删除'); return; }
+        var enabledCount = Store.questions.filter(function(x) { return x.enabled; }).length;
+        if (q.enabled && enabledCount <= 1) { alert('至少需要 1 个启用的题目，无法删除'); return; }
+
         showConfirm('确定要删除该问题吗？', function() {
           QuestionService.deleteQuestion(id);
+          if (Store.user.isLoggedIn) {
+            ApiService._fetch('DELETE', '/api/questions/' + id).catch(function(){});
+          }
           renderAdminTable();
         });
       };
+    });
+  }
+
+  // ── 用户管理 ──
+  function renderUserTable() {
+    var tbody = document.getElementById('admin-users-tbody');
+    if (!tbody) return;
+
+    ApiService._fetch('GET', '/api/auth/admin/users').then(function(data) {
+      var users = data.users || [];
+      tbody.innerHTML = users.map(function(u) {
+        var isBanned = u.banned === 1;
+        var statusHtml = isBanned
+          ? '<span class="status-badge banned">已封禁</span>'
+          : '<span class="status-badge active">正常</span>';
+        var actionHtml = '';
+        if (u.role !== 'admin') {
+          actionHtml = isBanned
+            ? '<span class="action-link" data-unban-id="' + u.id + '">解封</span>'
+            : '<span class="action-link danger" data-ban-id="' + u.id + '">封禁</span>';
+        }
+        return '<tr>' +
+          '<td>' + u.id + '</td>' +
+          '<td style="font-weight:700;">' + escapeHTML(u.username) + '</td>' +
+          '<td>' + (u.role === 'admin' ? '管理员' : '用户') + '</td>' +
+          '<td>' + statusHtml + '</td>' +
+          '<td>' + (u.created_at || '') + '</td>' +
+          '<td>' + actionHtml + '</td>' +
+        '</tr>';
+      }).join('');
+
+      // 封禁
+      tbody.querySelectorAll('[data-ban-id]').forEach(function(btn) {
+        btn.onclick = function() {
+          var uid = this.dataset.banId;
+          if (!confirm('确定封禁该用户吗？')) return;
+          ApiService._fetch('PUT', '/api/auth/admin/users/' + uid + '/ban').then(function() {
+            renderUserTable();
+          }).catch(function(e) { alert(e.message); });
+        };
+      });
+
+      // 解封
+      tbody.querySelectorAll('[data-unban-id]').forEach(function(btn) {
+        btn.onclick = function() {
+          var uid = this.dataset.unbanId;
+          ApiService._fetch('PUT', '/api/auth/admin/users/' + uid + '/unban').then(function() {
+            renderUserTable();
+          });
+        };
+      });
+    }).catch(function(e) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#D94A3A;">加载失败: ' + escapeHTML(e.message) + '</td></tr>';
     });
   }
 
@@ -679,8 +792,8 @@
       if (Store.quiz.options.length < CONSTANTS.OPTION_MIN) { alert('请至少输入 2 个选项'); return; }
     }
     if (page === 'admin') {
-      if (!Store.user.isLoggedIn || Store.user.role !== 'admin') {
-        alert('需要管理员权限，请使用管理员账号登录\n\n默认管理员：admin / admin123');
+      if (!Store.user.isLoggedIn) {
+        alert('请先登录后再访问管理页');
         Router.navigate('auth'); return;
       }
     }
