@@ -8,8 +8,8 @@
 <style>
 /* ============================================================
    DESIGN SYSTEM — 选择困难终结
-   风格：暖色手绘 · 粗黑描边 · 扁平原色 · 圆角柔和
-   配色：米白 + 浅黄 + 浅粉低饱和暖色 + 黑色轮廓
+   风格：暖色手绘 · 粗黑描边立体感 · 扁平原色 · 圆角柔和
+   配色：米白 + 浅黄 + 浅粉低饱和暖色 + 黑色粗轮廓
    ============================================================ */
 
 :root {
@@ -19,7 +19,6 @@
   --yellow-warm:  #FFEDB3;
   --pink-pale:    #FFEFEC;
   --pink-warm:    #FFE0DA;
-  --pink-deep:    #FFCBBF;
   --mint-pale:    #EDF8F0;
   --mint-warm:    #C8ECD4;
   --lavender:     #F3EEFB;
@@ -28,17 +27,17 @@
   --black-soft:   #3A3A3A;
   --gray-mid:     #7A7A7A;
   --gray-light:   #B0B0B0;
-  --stroke:       2.5px;
-  --stroke-thin:  1.5px;
+  --stroke:       3.5px;
+  --stroke-thin:  2px;
   --radius-sm:    12px;
   --radius:       18px;
   --radius-lg:    22px;
-  --radius-xl:    26px;
+  --radius-xl:    28px;
   --radius-full:  9999px;
+  --shadow-doodle: 5px 5px 0 rgba(0,0,0,0.1);
+  --shadow-card:   6px 6px 0 rgba(0,0,0,0.09);
   --font-heading: 'DM Sans', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
   --font-body:    'DM Sans', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
-  --shadow-soft:  0 4px 0 rgba(0,0,0,0.08);
-  --shadow-card:  0 4px 0 rgba(0,0,0,0.1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -51,101 +50,135 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   background-image:
-    radial-gradient(circle at 20% 10%, rgba(255,224,200,0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 90%, rgba(255,200,200,0.2) 0%, transparent 50%);
+    radial-gradient(circle at 15% 5%, rgba(255,235,210,0.5) 0%, transparent 55%),
+    radial-gradient(circle at 85% 95%, rgba(255,215,210,0.4) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(255,245,225,0.3) 0%, transparent 70%);
 }
 
 /* ---- Layout ---- */
 .demo-container {
-  max-width: 960px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 28px 20px 80px;
+  padding: 36px 28px 100px;
 }
 
-/* ---- Phone Frame ---- */
-.phone-frame {
-  width: 420px;
-  margin: 0 auto 60px;
-  background: var(--cream);
+/* ---- Header ---- */
+.demo-header {
+  text-align: center;
+  padding: 40px 24px 52px;
+}
+
+.demo-header .demo-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.demo-header h1 {
+  font-family: var(--font-heading);
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+  display: inline-block;
+  background: var(--yellow-warm);
+  padding: 6px 28px;
   border: var(--stroke) solid var(--black);
-  border-radius: 36px;
-  overflow: hidden;
-  box-shadow: var(--shadow-card), 0 12px 40px rgba(0,0,0,0.1);
-  position: relative;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-doodle);
 }
 
-.phone-frame.wide {
-  width: 540px;
-}
-
-/* ---- Status Bar ---- */
-.status-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 28px 8px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--black);
-  letter-spacing: 0.02em;
-}
-
-.status-icons { display: flex; gap: 6px; align-items: center; }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--black); }
-
-/* ---- Screen Content ---- */
-.screen-content {
-  padding: 16px 24px 28px;
-}
-
-/* ---- Bottom Nav ---- */
-.bottom-nav {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 14px 20px 22px;
-  border-top: var(--stroke-thin) solid var(--black);
-  background: var(--cream-deep);
-}
-
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  font-size: 0.68rem;
-  font-weight: 700;
+.demo-header .subtitle {
+  display: block;
+  margin-top: 14px;
   color: var(--gray-mid);
-  cursor: pointer;
-  transition: color 0.15s;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
-.nav-item.active {
-  color: var(--black);
+/* ---- Page Section ---- */
+.page-section {
+  margin-bottom: 80px;
 }
 
-.nav-item .nav-icon {
-  font-size: 1.3rem;
+.page-section:last-child { margin-bottom: 0; }
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  padding-bottom: 10px;
+  border-bottom: var(--stroke) solid var(--black);
 }
 
-.nav-item.active .nav-icon {
-  position: relative;
+.section-label .dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--yellow-warm);
+  border: var(--stroke-thin) solid var(--black);
 }
 
-.nav-item.active .nav-icon::after {
-  content: '';
-  position: absolute;
-  bottom: -5px; left: 50%;
-  transform: translateX(-50%);
-  width: 16px; height: 3px;
-  background: var(--black);
-  border-radius: 2px;
+.section-label h2 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
 }
+
+.state-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border: var(--stroke-thin) solid var(--black);
+  border-radius: var(--radius-full);
+  background: #fff;
+  color: var(--gray-mid);
+  margin-left: auto;
+}
+
+/* ---- Page Grid ---- */
+.page-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: 36px;
+}
+
+.page-row.single {
+  grid-template-columns: 1fr;
+  max-width: 780px;
+}
+
+.page-row.wide {
+  grid-template-columns: 1fr;
+  max-width: 880px;
+}
+
+/* ---- Card ---- */
+.card {
+  background: #fff;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-xl);
+  padding: 32px 36px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+}
+
+.card-pink   { background: var(--pink-pale); }
+.card-yellow { background: var(--yellow-pale); }
+.card-mint   { background: var(--mint-pale); }
+.card-cream  { background: var(--cream-deep); }
 
 /* ---- Typography ---- */
 .page-title {
   font-family: var(--font-heading);
-  font-size: 1.65rem;
+  font-size: 1.7rem;
   font-weight: 800;
   line-height: 1.25;
   letter-spacing: -0.02em;
@@ -153,7 +186,7 @@ body {
 }
 
 .page-subtitle {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   color: var(--gray-mid);
   font-weight: 500;
   margin-bottom: 20px;
@@ -161,39 +194,18 @@ body {
 
 .section-title {
   font-family: var(--font-heading);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   margin-bottom: 12px;
 }
 
-/* ---- Components ---- */
-
-/* Card */
-.card {
-  background: #fff;
-  border: var(--stroke) solid var(--black);
-  border-radius: var(--radius-lg);
-  padding: 22px 20px;
-  box-shadow: var(--shadow-card);
-  transition: transform 0.15s;
+.hero-emoji {
+  font-size: 3.2rem;
+  display: block;
+  margin-bottom: 4px;
 }
 
-.card:hover { transform: translateY(-1px); }
-
-.card-pink  { background: var(--pink-pale); }
-.card-yellow { background: var(--yellow-pale); }
-.card-mint   { background: var(--mint-pale); }
-.card-cream  { background: var(--cream); }
-
-/* Inline card groups */
-.card-row {
-  display: flex;
-  gap: 14px;
-}
-
-.card-row > * { flex: 1; }
-
-/* Button */
+/* ---- Button ---- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -202,40 +214,36 @@ body {
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-full);
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  padding: 12px 26px;
+  padding: 13px 28px;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
   background: #fff;
   color: var(--black);
-  box-shadow: 0 3px 0 rgba(0,0,0,0.1);
-  position: relative;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
 }
 
 .btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.08);
 }
 
 .btn-primary {
   background: var(--yellow-warm);
 }
-
-.btn-primary:hover { background: #FFE7A0; }
+.btn-primary:hover { background: #FFE392; box-shadow: 5px 5px 0 rgba(0,0,0,0.13); }
 
 .btn-pink {
   background: var(--pink-pale);
 }
-
-.btn-pink:hover { background: var(--pink-warm); }
+.btn-pink:hover { background: var(--pink-warm); box-shadow: 5px 5px 0 rgba(0,0,0,0.13); }
 
 .btn-mint {
   background: var(--mint-pale);
 }
-
-.btn-mint:hover { background: var(--mint-warm); }
+.btn-mint:hover { background: var(--mint-warm); box-shadow: 5px 5px 0 rgba(0,0,0,0.13); }
 
 .btn-ghost {
   background: transparent;
@@ -243,62 +251,60 @@ body {
   box-shadow: none;
   color: var(--gray-mid);
   font-weight: 600;
-  padding: 8px 14px;
+  padding: 8px 16px;
 }
-
 .btn-ghost:hover { color: var(--black); }
 
 .btn-disabled {
   opacity: 0.35;
   pointer-events: none;
+  box-shadow: none;
 }
 
-.btn-sm { padding: 8px 16px; font-size: 0.78rem; }
-.btn-xs { padding: 5px 11px; font-size: 0.72rem; border-radius: var(--radius-full); border-width: var(--stroke-thin); }
-
+.btn-sm  { padding: 9px 18px; font-size: 0.82rem; border-width: var(--stroke-thin); }
+.btn-xs  { padding: 5px 12px; font-size: 0.74rem; border-width: var(--stroke-thin); }
 .btn-block { width: 100%; }
 
 /* ---- Input ---- */
 .input {
   width: 100%;
-  padding: 14px 18px;
+  padding: 15px 20px;
   background: #fff;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-full);
   color: var(--black);
   font-family: var(--font-body);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 500;
   outline: none;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.06);
   transition: box-shadow 0.2s;
 }
 
-.input:focus {
-  box-shadow: 0 0 0 4px rgba(0,0,0,0.06);
-}
-
+.input:focus { box-shadow: 0 0 0 5px rgba(0,0,0,0.06); }
 .input::placeholder { color: var(--gray-light); }
 
 /* ---- Tags ---- */
 .tags-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
-  min-height: 28px;
+  gap: 10px;
+  margin-top: 16px;
+  min-height: 30px;
 }
 
 .tag {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 16px;
+  padding: 8px 18px;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-full);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
   background: #fff;
   color: var(--black);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.07);
 }
 
 .tag.yellow { background: var(--yellow-pale); }
@@ -308,14 +314,14 @@ body {
 
 .tag-close {
   cursor: pointer;
-  font-size: 0.7rem;
-  opacity: 0.5;
+  font-size: 0.72rem;
+  opacity: 0.45;
 }
 .tag-close:hover { opacity: 0.8; }
 
 .tags-empty {
   color: var(--gray-light);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-style: italic;
 }
 
@@ -323,40 +329,36 @@ body {
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 3px 12px;
+  padding: 4px 14px;
   border: var(--stroke-thin) solid var(--black);
   border-radius: var(--radius-full);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   background: #fff;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.06);
 }
 
-.badge-accent {
-  background: var(--yellow-warm);
-}
-
-.badge-lg {
-  font-size: 0.78rem;
-  padding: 5px 14px;
-}
+.badge-accent { background: var(--yellow-warm); }
+.badge-lg { font-size: 0.8rem; padding: 6px 16px; }
 
 /* ---- Progress ---- */
 .progress-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   margin-bottom: 6px;
 }
 
 .progress-track {
   flex: 1;
-  height: 8px;
+  height: 10px;
   background: #fff;
   border: var(--stroke-thin) solid var(--black);
   border-radius: var(--radius-full);
   overflow: hidden;
+  box-shadow: inset 0 2px 0 rgba(0,0,0,0.06);
 }
 
 .progress-fill {
@@ -367,10 +369,10 @@ body {
 }
 
 .progress-text {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--gray-mid);
-  min-width: 90px;
+  min-width: 100px;
   text-align: right;
 }
 
@@ -378,17 +380,18 @@ body {
 .slider-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 16px;
+  gap: 16px;
+  padding: 14px 18px;
   background: #fff;
   border: var(--stroke-thin) solid var(--black);
   border-radius: var(--radius);
   margin-bottom: 10px;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
 }
 
 .slider-label {
-  min-width: 70px;
-  font-size: 0.88rem;
+  min-width: 80px;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
@@ -399,84 +402,93 @@ body {
   height: 6px;
   border-radius: 3px;
   background: #E8E5DF;
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1.5px solid rgba(0,0,0,0.2);
   outline: none;
 }
 
 .slider-item input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 26px; height: 26px;
+  width: 28px; height: 28px;
   border-radius: 50%;
   background: #fff;
   border: var(--stroke) solid var(--black);
   cursor: pointer;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.15);
-  transition: transform 0.1s;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.12);
 }
-
 .slider-item input[type="range"]::-webkit-slider-thumb:active {
-  transform: scale(1.1);
+  transform: scale(1.12);
 }
 
 .slider-score {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 34px; height: 34px;
+  min-width: 38px; height: 38px;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-sm);
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   background: #fff;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
 }
 
 .slider-score.high {
   background: var(--yellow-warm);
 }
 
+.slider-hint {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--gray-mid);
+  font-weight: 600;
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ---- Divider ---- */
 .divider {
   border: none;
   border-top: var(--stroke-thin) solid var(--black);
-  margin: 18px 0;
-  opacity: 0.3;
+  margin: 20px 0;
+  opacity: 0.35;
 }
 
 .divider-dashed {
-  border-top: 2px dashed rgba(0,0,0,0.2);
-  margin: 20px 0;
+  border-top: 2.5px dashed rgba(0,0,0,0.2);
+  margin: 22px 0;
 }
 
 /* ---- Result Hero ---- */
 .result-hero {
   text-align: center;
-  padding: 8px 0 16px;
+  padding: 12px 0 20px;
 }
 
-.result-icon {
-  font-size: 3rem;
-  margin-bottom: 2px;
-}
+.result-icon { font-size: 3.4rem; margin-bottom: 6px; display: block; }
 
 .result-winner {
   font-family: var(--font-heading);
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 900;
   letter-spacing: -0.03em;
-  padding: 6px 28px;
+  padding: 8px 32px;
   display: inline-block;
   background: var(--yellow-warm);
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-full);
-  box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-doodle);
 }
 
 .result-score {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   color: var(--gray-mid);
   font-weight: 600;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 /* Reason box */
@@ -484,182 +496,184 @@ body {
   background: #fff;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius);
-  padding: 16px 20px;
-  margin: 20px 0;
-  font-size: 0.84rem;
+  padding: 20px 24px;
+  margin: 24px 0;
+  font-size: 0.88rem;
   color: var(--black-soft);
-  line-height: 1.7;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.06);
+  line-height: 1.75;
+  box-shadow: var(--shadow-doodle);
 }
 
-.reason-box strong {
-  font-weight: 800;
-}
+.reason-box strong { font-weight: 800; }
 
 /* Chart */
 .chart-wrap {
-  margin: 16px 0;
-  padding: 16px 8px;
+  margin: 20px 0;
+  padding: 20px 12px;
   background: #fff;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius);
-  height: 240px;
+  height: 280px;
   position: relative;
+  box-shadow: var(--shadow-doodle);
 }
-
 .chart-wrap canvas { width: 100% !important; height: 100% !important; }
 
 /* Score table */
 .score-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.8rem;
-  margin-top: 10px;
+  font-size: 0.84rem;
+  margin-top: 12px;
 }
-
 .score-table th, .score-table td {
-  padding: 8px 10px;
+  padding: 10px 12px;
   text-align: center;
   border-bottom: var(--stroke-thin) solid var(--black);
 }
-
 .score-table th {
   font-weight: 700;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: var(--gray-mid);
 }
-
 .score-table td { font-weight: 500; }
-.score-table td.highlight { font-weight: 800; background: var(--yellow-pale); border-radius: 4px; }
+.score-table td.highlight {
+  font-weight: 800;
+  background: var(--yellow-pale);
+  border-radius: 4px;
+}
 
-/* History list */
+/* Detail summary */
+details summary {
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 0;
+  cursor: pointer;
+  color: var(--black-soft);
+}
+
+/* ---- History ---- */
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .history-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 18px;
+  padding: 18px 22px;
   background: #fff;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius);
-  box-shadow: 0 2px 0 rgba(0,0,0,0.06);
-  transition: transform 0.15s;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.07);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.history-item:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.1);
 }
 
-.history-item:hover { transform: translateY(-1px); }
-
-.history-meta { display: flex; flex-direction: column; gap: 3px; }
+.history-meta { display: flex; flex-direction: column; gap: 4px; }
 
 .history-time {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: var(--gray-mid);
   font-weight: 600;
 }
 
 .history-options {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
 .history-result {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
 }
 
-.history-result .crown { font-size: 1.1rem; }
+.history-result .crown { font-size: 1.2rem; }
 
-/* Admin table */
+/* ---- Admin ---- */
 .admin-table-wrap { overflow-x: auto; }
 
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.84rem;
+  font-size: 0.88rem;
 }
-
 .admin-table th {
   text-align: left;
-  padding: 10px 14px;
+  padding: 12px 16px;
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--gray-mid);
   border-bottom: var(--stroke) solid var(--black);
 }
-
 .admin-table td {
-  padding: 12px 14px;
+  padding: 14px 16px;
   border-bottom: var(--stroke-thin) solid var(--black);
   font-weight: 500;
 }
-
 .admin-table tr:last-child td { border-bottom: none; }
 
 .weight-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px; height: 28px;
+  width: 38px; height: 30px;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-sm);
   font-weight: 800;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
 }
 
 .weight-1 { background: #fff; }
 .weight-2 { background: var(--yellow-pale); }
 .weight-3 { background: var(--yellow-warm); }
 
-/* Toggle switch */
+/* Toggle */
 .toggle {
-  width: 44px; height: 26px;
+  width: 48px; height: 28px;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-full);
   background: #fff;
   position: relative;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.06);
+  transition: background 0.25s;
 }
-
 .toggle.on { background: var(--mint-warm); }
-
 .toggle::after {
   content: '';
   position: absolute;
   top: 3px; left: 3px;
-  width: 16px; height: 16px;
+  width: 18px; height: 18px;
   border-radius: 50%;
   background: var(--black);
-  border: 1px solid rgba(0,0,0,0.3);
-  transition: transform 0.2s;
+  transition: transform 0.25s;
 }
-
-.toggle.on::after {
-  transform: translateX(18px);
-}
+.toggle.on::after { transform: translateX(18px); }
 
 /* Action links */
 .action-link {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
-  margin-right: 14px;
+  margin-right: 16px;
   color: var(--black-soft);
   text-underline-offset: 3px;
   text-decoration-thickness: 2px;
 }
-
 .action-link:hover { text-decoration: underline; }
 .action-link.danger:hover { color: #D94A3A; }
 
@@ -667,18 +681,18 @@ body {
 .add-form {
   display: flex;
   align-items: flex-end;
-  gap: 12px;
-  margin-top: 18px;
-  padding: 18px 20px;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 20px 22px;
   background: #fff;
-  border: 2px dashed var(--black);
+  border: 3px dashed var(--black);
   border-radius: var(--radius);
 }
 
 .add-form .field { display: flex; flex-direction: column; gap: 5px; }
 
 .add-form .field label {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -686,38 +700,35 @@ body {
 }
 
 .add-form .field input {
-  padding: 10px 14px;
+  padding: 11px 16px;
   background: #fff;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-full);
   font-family: var(--font-body);
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   font-weight: 500;
   outline: none;
-  width: 200px;
+  width: 220px;
 }
 
-.add-form .field input.weight-input { width: 56px; text-align: center; }
+.add-form .field input.weight-input { width: 64px; text-align: center; }
 
-/* Password modal */
+/* ---- Password Modal ---- */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,251,245,0.85);
-  backdrop-filter: blur(3px);
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  padding: 40px 0;
 }
 
 .modal-box {
   background: #fff;
   border: var(--stroke) solid var(--black);
   border-radius: var(--radius-xl);
-  padding: 32px 28px;
-  width: 340px;
-  box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+  padding: 36px 32px;
+  max-width: 380px;
+  box-shadow: var(--shadow-card);
   text-align: center;
 }
 
@@ -725,108 +736,60 @@ body {
   font-family: var(--font-heading);
   font-size: 1.2rem;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-/* Home variants */
-.hero-emoji {
-  font-size: 3.2rem;
-  display: block;
-  margin-bottom: 6px;
-}
-
+/* ---- Header Actions ---- */
 .header-actions {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
-  margin-top: 22px;
-  padding-top: 18px;
+  margin-top: 24px;
+  padding-top: 20px;
   border-top: var(--stroke-thin) solid var(--black);
 }
 
-/* Page section labels */
-.section-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
-  padding-bottom: 10px;
-  border-bottom: 3px solid var(--black);
-}
+/* ---- Flex helpers ---- */
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-center  { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; }
+.flex-col     { display: flex; flex-direction: column; }
 
-.section-label .dot {
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  background: var(--yellow-warm);
-  border: var(--stroke-thin) solid var(--black);
-}
+.gap-8  { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+.gap-14 { gap: 14px; }
+.gap-16 { gap: 16px; }
 
-.section-label h2 {
-  font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-
-.state-tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 3px 10px;
-  border: var(--stroke-thin) solid var(--black);
-  border-radius: var(--radius-full);
-  background: var(--cream-deep);
-  color: var(--gray-mid);
-  margin-left: auto;
-}
-
-/* Spacing */
 .mt-8  { margin-top: 8px; }
 .mt-12 { margin-top: 12px; }
 .mt-16 { margin-top: 16px; }
 .mt-20 { margin-top: 20px; }
 .mt-24 { margin-top: 24px; }
 .mt-28 { margin-top: 28px; }
+.mt-32 { margin-top: 32px; }
+.mb-8  { margin-bottom: 8px; }
 .mb-12 { margin-bottom: 12px; }
 .mb-16 { margin-bottom: 16px; }
-.gap-10 { gap: 10px; }
-.gap-12 { gap: 12px; }
+.mb-20 { margin-bottom: 20px; }
 
-/* Detail summary */
-details summary {
-  font-weight: 700;
-  font-size: 0.82rem;
-  padding: 8px 0;
-  cursor: pointer;
-  color: var(--black-soft);
-}
-
-/* Footer */
+/* ---- Footer ---- */
 .demo-footer {
   text-align: center;
-  padding: 32px 0 12px;
+  padding: 40px 0 12px;
   color: var(--gray-mid);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 500px) {
-  .phone-frame, .phone-frame.wide { width: 100%; border-radius: 24px; }
-  .screen-content { padding: 12px 16px 24px; }
-  .status-bar { padding: 10px 20px 6px; }
-}
-
-/* ---- Page section outer ---- */
-.page-section {
-  margin-bottom: 64px;
-}
-.page-section:last-child { margin-bottom: 0; }
-
-/* ---- Hand-drawn touch: slightly irregular shadows on some cards ---- */
-.card-doodle {
-  box-shadow:
-    3px 3px 0 rgba(0,0,0,0.08),
-    -1px -1px 0 rgba(0,0,0,0.03);
+@media (max-width: 700px) {
+  .demo-container { padding: 16px 10px 60px; }
+  .page-row { grid-template-columns: 1fr; gap: 24px; }
+  .page-row.single, .page-row.wide { max-width: 100%; }
+  .card { padding: 22px 18px; }
+  .add-form { flex-wrap: wrap; }
+  .add-form .field input { width: 100%; }
+  .demo-header h1 { font-size: 1.5rem; padding: 6px 18px; }
 }
 </style>
 </head>
@@ -835,122 +798,72 @@ details summary {
 <div class="demo-container">
 
   <!-- ======================== HEADER ======================== -->
-  <div style="text-align:center;padding:32px 24px 44px;">
-    <span style="font-size:2.8rem;display:block;margin-bottom:4px;">🎯</span>
-    <h1 style="font-family:var(--font-heading);font-size:2rem;font-weight:900;letter-spacing:-0.02em;margin-bottom:4px;">选择困难终结</h1>
-    <p style="color:var(--gray-mid);font-size:0.92rem;font-weight:600;">
-      Design Demo — 暖色手绘 · 粗黑描边 · 5 页面 · 核心状态
-    </p>
-  </div>
+  <header class="demo-header">
+    <span class="demo-icon">🎯</span>
+    <h1>选择困难终结</h1>
+    <span class="subtitle">Design Demo — 暖色手绘 · 粗黑描边立体感 · 5 页面完整展示</span>
+  </header>
 
   <!-- ======================== 1. HOME ======================== -->
   <section class="page-section">
     <div class="section-label">
       <span class="dot"></span>
       <h2>页面 1 · 首页</h2>
-      <span class="state-tag">初始 / 已输入</span>
+      <span class="state-tag">初始状态</span>
     </div>
 
-    <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;">
-
+    <div class="page-row single">
       <!-- 状态 A：未输入 -->
-      <div class="phone-frame">
-        <!-- status bar -->
-        <div class="status-bar">
-          <span>9:41</span>
-          <span class="status-icons">
-            <span class="status-dot"></span>
-            <span class="status-dot" style="width:4px;"></span>
-            <span>▮▮▮▮</span>
-          </span>
+      <div class="card card-cream">
+        <span class="hero-emoji">🎯</span>
+        <div class="page-title">选择困难终结</div>
+        <div class="page-subtitle">输入 2-10 个选项，让数据帮你做决定</div>
+
+        <input class="input" type="text" placeholder="输入选项，用逗号或空格分隔，如：火锅, 烧烤, 日料" value="">
+
+        <div class="tags-row">
+          <span class="tags-empty">输入选项后将在此显示标签</span>
         </div>
 
-        <div class="screen-content">
-          <span class="hero-emoji">🎯</span>
-          <div class="page-title">选择困难<br>终结</div>
-          <div class="page-subtitle">输入选项，让数据帮你做决定</div>
-
-          <input class="input" type="text" placeholder="火锅, 烧烤, 日料..." value="">
-
-          <div class="tags-row">
-            <span class="tags-empty">输入后自动解析为标签 →</span>
-          </div>
-
-          <div class="mt-24">
-            <button class="btn btn-primary btn-block btn-disabled">开始决策 →</button>
-          </div>
-
-          <div class="header-actions">
-            <button class="btn btn-ghost btn-sm">📋 历史</button>
-            <button class="btn btn-ghost btn-sm">⚙ 管理</button>
-          </div>
+        <div class="mt-28">
+          <button class="btn btn-primary btn-block btn-disabled">开始决策 →</button>
         </div>
 
-        <!-- bottom nav -->
-        <div class="bottom-nav">
-          <div class="nav-item active">
-            <span class="nav-icon">🏠</span> 首页
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📝</span> 决策
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📋</span> 历史
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">⚙</span> 设置
-          </div>
+        <div class="header-actions">
+          <button class="btn btn-ghost btn-sm">📋 历史记录</button>
+          <button class="btn btn-ghost btn-sm">⚙ 管理</button>
         </div>
       </div>
+    </div>
 
-      <!-- 状态 B：已输入选项 -->
-      <div class="phone-frame">
-        <div class="status-bar">
-          <span>9:41</span>
-          <span class="status-icons">
-            <span class="status-dot"></span>
-            <span class="status-dot" style="width:4px;"></span>
-            <span>▮▮▮▮</span>
-          </span>
+    <!-- 状态 B：已输入选项 -->
+    <div class="section-label mt-32">
+      <span class="dot"></span>
+      <span style="font-size:0.88rem;font-weight:700;">状态变体：已输入选项，标签展示</span>
+    </div>
+
+    <div class="page-row single">
+      <div class="card card-cream">
+        <span class="hero-emoji">🎯</span>
+        <div class="page-title">选择困难终结</div>
+        <div class="page-subtitle">输入 2-10 个选项，让数据帮你做决定</div>
+
+        <input class="input" type="text" value="火锅, 烧烤, 日料, 沙拉">
+
+        <div class="tags-row">
+          <span class="tag yellow">🍲 火锅 <span class="tag-close">✕</span></span>
+          <span class="tag pink">🥩 烧烤 <span class="tag-close">✕</span></span>
+          <span class="tag mint">🍣 日料 <span class="tag-close">✕</span></span>
+          <span class="tag peach">🥗 沙拉 <span class="tag-close">✕</span></span>
         </div>
 
-        <div class="screen-content">
-          <span class="hero-emoji">🎯</span>
-          <div class="page-title">选择困难<br>终结</div>
-          <div class="page-subtitle">输入选项，让数据帮你做决定</div>
-
-          <input class="input" type="text" value="火锅, 烧烤, 日料, 沙拉">
-
-          <div class="tags-row">
-            <span class="tag yellow">火锅 ✕</span>
-            <span class="tag pink">烧烤 ✕</span>
-            <span class="tag mint">日料 ✕</span>
-            <span class="tag peach">沙拉 ✕</span>
-          </div>
-
-          <div class="mt-24">
-            <button class="btn btn-primary btn-block">开始决策 →</button>
-          </div>
-
-          <div class="header-actions">
-            <button class="btn btn-ghost btn-sm">📋 历史</button>
-            <button class="btn btn-ghost btn-sm">⚙ 管理</button>
-          </div>
+        <div class="mt-28">
+          <button class="btn btn-primary btn-block">开始决策 →</button>
         </div>
 
-        <div class="bottom-nav">
-          <div class="nav-item active">
-            <span class="nav-icon">🏠</span> 首页
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📝</span> 决策
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📋</span> 历史
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">⚙</span> 设置
-          </div>
+        <div class="header-actions">
+          <button class="btn btn-ghost btn-sm">📋 历史记录</button>
+          <button class="btn btn-ghost btn-sm">⚙ 管理</button>
         </div>
       </div>
     </div>
@@ -964,150 +877,107 @@ details summary {
       <span class="state-tag">第 2 题 / 共 5 题</span>
     </div>
 
-    <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;">
-
-      <!-- Quiz mid -->
-      <div class="phone-frame">
-        <div class="status-bar">
-          <span>9:42</span>
-          <span class="status-icons">
-            <span class="status-dot"></span>
-            <span class="status-dot" style="width:4px;"></span>
-            <span>▮▮▮▮</span>
-          </span>
+    <div class="page-row single">
+      <div class="card">
+        <!-- Progress -->
+        <div class="progress-wrap mb-16">
+          <div class="progress-track">
+            <div class="progress-fill" style="width:40%;"></div>
+          </div>
+          <span class="progress-text">第 2 / 5 题</span>
         </div>
 
-        <div class="screen-content">
-          <!-- Progress -->
-          <div class="progress-wrap mb-12">
-            <div class="progress-track">
-              <div class="progress-fill" style="width:40%;"></div>
-            </div>
-            <span class="progress-text">第 2 / 5 题</span>
-          </div>
+        <!-- Question -->
+        <span class="badge badge-accent badge-lg mb-12" style="display:inline-flex;">权重 ×3</span>
+        <div class="page-title mb-12">你对价格敏感吗？</div>
+        <div class="page-subtitle">拖动滑块为每个选项打分</div>
 
-          <!-- Question -->
-          <span class="badge badge-accent badge-lg mb-12" style="display:inline-flex;">权重 ×3</span>
-          <div class="page-title mb-12">你对价格<br>敏感吗？</div>
-          <div class="page-subtitle">拖动滑块为每个选项打分</div>
+        <hr class="divider-dashed">
 
-          <hr class="divider-dashed">
-
-          <!-- Sliders -->
-          <div class="slider-item">
-            <span class="slider-label">🍲 火锅</span>
-            <input type="range" min="1" max="5" value="2">
-            <span class="slider-score">2</span>
-          </div>
-          <div class="slider-item">
-            <span class="slider-label">🥩 烧烤</span>
-            <input type="range" min="1" max="5" value="3">
-            <span class="slider-score">3</span>
-          </div>
-          <div class="slider-item">
-            <span class="slider-label">🍣 日料</span>
-            <input type="range" min="1" max="5" value="5">
-            <span class="slider-score high">5</span>
-          </div>
-          <div class="slider-item">
-            <span class="slider-label">🥗 沙拉</span>
-            <input type="range" min="1" max="5" value="5">
-            <span class="slider-score high">5</span>
-          </div>
-
-          <div style="text-align:center;font-size:0.7rem;color:var(--gray-mid);font-weight:600;margin-top:4px;display:flex;justify-content:space-between;">
-            <span>1 = 非常不符合</span>
-            <span>5 = 非常符合</span>
-          </div>
-
-          <!-- Nav -->
-          <div class="mt-24" style="display:flex;justify-content:space-between;">
-            <button class="btn btn-ghost btn-sm">← 上一题</button>
-            <button class="btn btn-primary">下一题 →</button>
-          </div>
+        <!-- Sliders -->
+        <div class="slider-item">
+          <span class="slider-label">🍲 火锅</span>
+          <input type="range" min="1" max="5" value="2">
+          <span class="slider-score">2</span>
+        </div>
+        <div class="slider-item">
+          <span class="slider-label">🥩 烧烤</span>
+          <input type="range" min="1" max="5" value="3">
+          <span class="slider-score">3</span>
+        </div>
+        <div class="slider-item">
+          <span class="slider-label">🍣 日料</span>
+          <input type="range" min="1" max="5" value="5">
+          <span class="slider-score high">5</span>
+        </div>
+        <div class="slider-item">
+          <span class="slider-label">🥗 沙拉</span>
+          <input type="range" min="1" max="5" value="5">
+          <span class="slider-score high">5</span>
         </div>
 
-        <div class="bottom-nav">
-          <div class="nav-item">
-            <span class="nav-icon">🏠</span> 首页
-          </div>
-          <div class="nav-item active">
-            <span class="nav-icon">📝</span> 决策
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📋</span> 历史
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">⚙</span> 设置
-          </div>
+        <div class="slider-hint">
+          <span>1 = 非常不符合</span>
+          <span>5 = 非常符合</span>
+        </div>
+
+        <div class="flex-between mt-28">
+          <button class="btn btn-ghost btn-sm">← 上一题</button>
+          <button class="btn btn-primary">下一题 →</button>
         </div>
       </div>
+    </div>
 
-      <!-- Quiz last question (button says "查看结果") -->
-      <div class="phone-frame">
-        <div class="status-bar">
-          <span>9:43</span>
-          <span class="status-icons">
-            <span class="status-dot"></span>
-            <span class="status-dot" style="width:4px;"></span>
-            <span>▮▮▮▮</span>
-          </span>
+    <!-- Quiz last question state -->
+    <div class="section-label mt-32">
+      <span class="dot"></span>
+      <span style="font-size:0.88rem;font-weight:700;">状态变体：最后一题 — 按钮变为「查看结果」</span>
+    </div>
+
+    <div class="page-row single">
+      <div class="card">
+        <div class="progress-wrap mb-16">
+          <div class="progress-track">
+            <div class="progress-fill" style="width:100%;"></div>
+          </div>
+          <span class="progress-text">第 5 / 5 题</span>
         </div>
 
-        <div class="screen-content">
-          <div class="progress-wrap mb-12">
-            <div class="progress-track">
-              <div class="progress-fill" style="width:100%;"></div>
-            </div>
-            <span class="progress-text">第 5 / 5 题</span>
-          </div>
+        <span class="badge badge-accent badge-lg mb-12" style="display:inline-flex;">权重 ×1</span>
+        <div class="page-title mb-12">最后一道题：环境重要吗？</div>
+        <div class="page-subtitle">答完就能看到结果啦 ✨</div>
 
-          <span class="badge badge-accent badge-lg mb-12" style="display:inline-flex;">权重 ×1</span>
-          <div class="page-title mb-12">最后一道题：<br>环境重要吗？</div>
-          <div class="page-subtitle">答完就能看到结果啦 ✨</div>
+        <hr class="divider-dashed">
 
-          <hr class="divider-dashed">
-
-          <div class="slider-item">
-            <span class="slider-label">🍲 火锅</span>
-            <input type="range" min="1" max="5" value="3">
-            <span class="slider-score">3</span>
-          </div>
-          <div class="slider-item">
-            <span class="slider-label">🥩 烧烤</span>
-            <input type="range" min="1" max="5" value="4">
-            <span class="slider-score">4</span>
-          </div>
-          <div class="slider-item">
-            <span class="slider-label">🍣 日料</span>
-            <input type="range" min="1" max="5" value="3">
-            <span class="slider-score">3</span>
-          </div>
-          <div class="slider-item">
-            <span class="slider-label">🥗 沙拉</span>
-            <input type="range" min="1" max="5" value="3">
-            <span class="slider-score">3</span>
-          </div>
-
-          <div class="mt-24" style="display:flex;justify-content:space-between;">
-            <button class="btn btn-ghost btn-sm">← 上一题</button>
-            <button class="btn btn-pink" style="font-size:0.92rem;padding:12px 30px;">✨ 查看结果</button>
-          </div>
+        <div class="slider-item">
+          <span class="slider-label">🍲 火锅</span>
+          <input type="range" min="1" max="5" value="3">
+          <span class="slider-score">3</span>
+        </div>
+        <div class="slider-item">
+          <span class="slider-label">🥩 烧烤</span>
+          <input type="range" min="1" max="5" value="4">
+          <span class="slider-score">4</span>
+        </div>
+        <div class="slider-item">
+          <span class="slider-label">🍣 日料</span>
+          <input type="range" min="1" max="5" value="3">
+          <span class="slider-score">3</span>
+        </div>
+        <div class="slider-item">
+          <span class="slider-label">🥗 沙拉</span>
+          <input type="range" min="1" max="5" value="3">
+          <span class="slider-score">3</span>
         </div>
 
-        <div class="bottom-nav">
-          <div class="nav-item">
-            <span class="nav-icon">🏠</span> 首页
-          </div>
-          <div class="nav-item active">
-            <span class="nav-icon">📝</span> 决策
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📋</span> 历史
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">⚙</span> 设置
-          </div>
+        <div class="slider-hint">
+          <span>1 = 非常不符合</span>
+          <span>5 = 非常符合</span>
+        </div>
+
+        <div class="flex-between mt-28">
+          <button class="btn btn-ghost btn-sm">← 上一题</button>
+          <button class="btn btn-pink" style="font-size:0.95rem;padding:13px 32px;">✨ 查看结果</button>
         </div>
       </div>
     </div>
@@ -1121,21 +991,12 @@ details summary {
       <span class="state-tag">沙拉胜出</span>
     </div>
 
-    <div class="phone-frame wide">
-      <div class="status-bar">
-        <span>9:43</span>
-        <span class="status-icons">
-          <span class="status-dot"></span>
-          <span class="status-dot" style="width:4px;"></span>
-          <span>▮▮▮▮</span>
-        </span>
-      </div>
-
-      <div class="screen-content">
+    <div class="page-row wide">
+      <div class="card">
         <!-- Hero -->
         <div class="result-hero">
-          <div class="result-icon">🏆</div>
-          <div class="result-winner">🥗 沙拉</div>
+          <span class="result-icon">🏆</span>
+          <span class="result-winner">🥗 沙拉</span>
           <div class="result-score">加权总分 · 22 分</div>
         </div>
 
@@ -1185,25 +1046,9 @@ details summary {
           </div>
         </details>
 
-        <!-- Actions -->
-        <div class="mt-20" style="display:flex;gap:12px;justify-content:center;">
+        <div class="flex-center mt-24">
           <button class="btn btn-ghost btn-sm">🔄 重新开始</button>
           <button class="btn btn-primary">💾 保存到历史</button>
-        </div>
-      </div>
-
-      <div class="bottom-nav">
-        <div class="nav-item">
-          <span class="nav-icon">🏠</span> 首页
-        </div>
-        <div class="nav-item active">
-          <span class="nav-icon">📝</span> 决策
-        </div>
-        <div class="nav-item">
-          <span class="nav-icon">📋</span> 历史
-        </div>
-        <div class="nav-item">
-          <span class="nav-icon">⚙</span> 设置
         </div>
       </div>
     </div>
@@ -1217,18 +1062,9 @@ details summary {
       <span class="state-tag">最近 10 次</span>
     </div>
 
-    <div class="phone-frame">
-      <div class="status-bar">
-        <span>9:44</span>
-        <span class="status-icons">
-          <span class="status-dot"></span>
-          <span class="status-dot" style="width:4px;"></span>
-          <span>▮▮▮▮</span>
-        </span>
-      </div>
-
-      <div class="screen-content">
-        <div class="page-title mb-12">📋 历史记录</div>
+    <div class="page-row single">
+      <div class="card">
+        <div class="section-title">📋 历史决策</div>
         <div class="page-subtitle">最近做出的选择，点击可查看详情</div>
 
         <div class="history-list mt-20">
@@ -1239,7 +1075,7 @@ details summary {
             </div>
             <div class="history-result">
               <span class="crown">🏆</span> 沙拉
-              <button class="btn btn-xs btn-ghost">→</button>
+              <button class="btn btn-xs btn-ghost">查看 →</button>
             </div>
           </div>
 
@@ -1250,7 +1086,7 @@ details summary {
             </div>
             <div class="history-result">
               <span class="crown">🏆</span> 爬山
-              <button class="btn btn-xs btn-ghost">→</button>
+              <button class="btn btn-xs btn-ghost">查看 →</button>
             </div>
           </div>
 
@@ -1261,7 +1097,7 @@ details summary {
             </div>
             <div class="history-result">
               <span class="crown">🏆</span> 商品B
-              <button class="btn btn-xs btn-ghost">→</button>
+              <button class="btn btn-xs btn-ghost">查看 →</button>
             </div>
           </div>
 
@@ -1272,31 +1108,17 @@ details summary {
             </div>
             <div class="history-result">
               <span class="crown">🏆</span> 大理
-              <button class="btn btn-xs btn-ghost">→</button>
+              <button class="btn btn-xs btn-ghost">查看 →</button>
             </div>
           </div>
         </div>
 
-        <!-- Export & clear -->
-        <div class="mt-24" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-          <button class="btn btn-sm">📥 JSON</button>
-          <button class="btn btn-sm">📥 CSV</button>
-          <button class="btn btn-sm btn-ghost" style="margin-left:auto;color:#D94A3A;">🗑 清空</button>
-        </div>
-      </div>
-
-      <div class="bottom-nav">
-        <div class="nav-item">
-          <span class="nav-icon">🏠</span> 首页
-        </div>
-        <div class="nav-item">
-          <span class="nav-icon">📝</span> 决策
-        </div>
-        <div class="nav-item active">
-          <span class="nav-icon">📋</span> 历史
-        </div>
-        <div class="nav-item">
-          <span class="nav-icon">⚙</span> 设置
+        <div class="flex-between mt-24">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-sm">📥 导出 JSON</button>
+            <button class="btn btn-sm">📥 导出 CSV</button>
+          </div>
+          <button class="btn btn-sm btn-ghost" style="color:#D94A3A;">🗑 清空历史</button>
         </div>
       </div>
     </div>
@@ -1310,165 +1132,113 @@ details summary {
       <span class="state-tag">管理员专属</span>
     </div>
 
-    <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;">
-
+    <div class="page-row">
       <!-- Password modal -->
-      <div class="phone-frame">
-        <div class="status-bar">
-          <span>9:41</span>
-          <span class="status-icons">
-            <span class="status-dot"></span>
-            <span class="status-dot" style="width:4px;"></span>
-            <span>▮▮▮▮</span>
-          </span>
-        </div>
-
-        <div class="screen-content" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;text-align:center;">
-          <div style="font-size:3rem;margin-bottom:8px;">🔐</div>
-          <div class="page-title" style="text-align:center;">管理员验证</div>
-          <div class="page-subtitle" style="text-align:center;margin-bottom:20px;">请输入密码进入管理页面</div>
-
-          <input class="input" type="password" value="admin" style="text-align:center;max-width:240px;">
-
-          <div style="display:flex;gap:10px;margin-top:16px;">
-            <button class="btn btn-ghost btn-sm">取消</button>
-            <button class="btn btn-primary btn-sm">验证 →</button>
-          </div>
-
-          <p style="color:var(--gray-mid);font-size:0.7rem;margin-top:16px;font-weight:500;">
-            默认密码 admin · 5次错误锁定5分钟
+      <div class="card" style="display:flex;align-items:center;justify-content:center;min-height:400px;">
+        <div class="modal-box" style="box-shadow:none;">
+          <div style="font-size:3rem;margin-bottom:10px;">🔐</div>
+          <h3>管理员验证</h3>
+          <p style="color:var(--gray-mid);font-size:0.85rem;margin-bottom:20px;font-weight:500;">
+            请输入密码进入管理页面
           </p>
-        </div>
-
-        <div class="bottom-nav">
-          <div class="nav-item">
-            <span class="nav-icon">🏠</span> 首页
+          <input class="input" type="password" value="admin" style="text-align:center;max-width:240px;margin:0 auto;">
+          <div class="flex-center mt-16">
+            <button class="btn btn-ghost btn-sm">取消</button>
+            <button class="btn btn-primary">验证 →</button>
           </div>
-          <div class="nav-item">
-            <span class="nav-icon">📝</span> 决策
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📋</span> 历史
-          </div>
-          <div class="nav-item active">
-            <span class="nav-icon">⚙</span> 设置
-          </div>
+          <p style="color:var(--gray-mid);font-size:0.72rem;margin-top:16px;font-weight:500;">
+            默认密码 admin · 5 次错误将锁定 5 分钟
+          </p>
         </div>
       </div>
 
       <!-- Admin panel -->
-      <div class="phone-frame wide">
-        <div class="status-bar">
-          <span>9:45</span>
-          <span class="status-icons">
-            <span class="status-dot"></span>
-            <span class="status-dot" style="width:4px;"></span>
-            <span>▮▮▮▮</span>
-          </span>
+      <div class="card">
+        <div class="section-title">⚙ 问题库管理</div>
+        <div class="page-subtitle">增删改查问题，调整权重与启用状态</div>
+
+        <div class="admin-table-wrap mt-20">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>问题文本</th>
+                <th>权重</th>
+                <th>启用</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td style="font-weight:700;">你对价格敏感吗？</td>
+                <td><span class="weight-badge weight-3">×3</span></td>
+                <td><span class="toggle on"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td style="font-weight:700;">口味对你来说有多重要？</td>
+                <td><span class="weight-badge weight-2">×2</span></td>
+                <td><span class="toggle on"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td style="font-weight:700;">用餐环境和服务重要吗？</td>
+                <td><span class="weight-badge weight-1">×1</span></td>
+                <td><span class="toggle"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td style="font-weight:700;">距离远近会影响你吗？</td>
+                <td><span class="weight-badge weight-2">×2</span></td>
+                <td><span class="toggle on"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td style="font-weight:700;">健康/卡路里重要吗？</td>
+                <td><span class="weight-badge weight-1">×1</span></td>
+                <td><span class="toggle"></span></td>
+                <td>
+                  <span class="action-link">编辑</span>
+                  <span class="action-link danger">删除</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="screen-content">
-          <div class="page-title mb-12">⚙ 问题库管理</div>
-          <div class="page-subtitle">增删改查问题，调整权重与启用状态</div>
-
-          <div class="admin-table-wrap mt-20">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>问题文本</th>
-                  <th>权重</th>
-                  <th>启用</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td style="font-weight:700;">你对价格敏感吗？</td>
-                  <td><span class="weight-badge weight-3">×3</span></td>
-                  <td><span class="toggle on"></span></td>
-                  <td>
-                    <span class="action-link">编辑</span>
-                    <span class="action-link danger">删除</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td style="font-weight:700;">口味对你来说有多重要？</td>
-                  <td><span class="weight-badge weight-2">×2</span></td>
-                  <td><span class="toggle on"></span></td>
-                  <td>
-                    <span class="action-link">编辑</span>
-                    <span class="action-link danger">删除</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td style="font-weight:700;">用餐环境和服务重要吗？</td>
-                  <td><span class="weight-badge weight-1">×1</span></td>
-                  <td><span class="toggle"></span></td>
-                  <td>
-                    <span class="action-link">编辑</span>
-                    <span class="action-link danger">删除</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td style="font-weight:700;">距离远近会影响你吗？</td>
-                  <td><span class="weight-badge weight-2">×2</span></td>
-                  <td><span class="toggle on"></span></td>
-                  <td>
-                    <span class="action-link">编辑</span>
-                    <span class="action-link danger">删除</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td style="font-weight:700;">健康/卡路里重要吗？</td>
-                  <td><span class="weight-badge weight-1">×1</span></td>
-                  <td><span class="toggle"></span></td>
-                  <td>
-                    <span class="action-link">编辑</span>
-                    <span class="action-link danger">删除</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <!-- Add form -->
+        <div class="add-form">
+          <div class="field" style="flex:1;">
+            <label>新问题</label>
+            <input type="text" placeholder="输入问题文本..." style="width:100%;">
           </div>
-
-          <!-- Add form -->
-          <div class="add-form">
-            <div class="field" style="flex:1;">
-              <label>新问题</label>
-              <input type="text" placeholder="输入问题文本..." style="width:100%;">
-            </div>
-            <div class="field">
-              <label>权重</label>
-              <input type="text" value="2" class="weight-input">
-            </div>
-            <button class="btn btn-primary btn-sm">+ 添加</button>
+          <div class="field">
+            <label>权重</label>
+            <input type="text" value="2" class="weight-input">
           </div>
-
-          <div class="mt-24" style="display:flex;justify-content:space-between;align-items:center;">
-            <button class="btn btn-ghost btn-sm">← 返回首页</button>
-            <button class="btn btn-primary">💾 保存修改</button>
-          </div>
+          <button class="btn btn-primary btn-sm">+ 添加</button>
         </div>
 
-        <div class="bottom-nav">
-          <div class="nav-item">
-            <span class="nav-icon">🏠</span> 首页
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📝</span> 决策
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📋</span> 历史
-          </div>
-          <div class="nav-item active">
-            <span class="nav-icon">⚙</span> 设置
-          </div>
+        <div class="flex-between mt-28">
+          <button class="btn btn-ghost btn-sm">← 返回首页</button>
+          <button class="btn btn-primary">💾 保存修改</button>
         </div>
       </div>
     </div>
@@ -1476,7 +1246,7 @@ details summary {
 
   <!-- Footer -->
   <div class="demo-footer">
-    🎯 选择困难终结 · 暖色手绘 · 粗黑描边 · 纯静态 Demo（配色 / 组件 / 布局 / 状态展示）
+    🎯 选择困难终结 · 暖色手绘 · 粗黑描边 · 静态组件展示（配色 / 布局 / 状态）
   </div>
 
 </div>
@@ -1492,16 +1262,10 @@ details summary {
     data: {
       labels: ['火锅', '烧烤', '日料', '沙拉'],
       datasets: [{
-        label: '加权总分',
         data: [19, 21, 21, 22],
-        backgroundColor: [
-          '#FFF6D5',
-          '#FFF6D5',
-          '#FFF6D5',
-          '#FFEDB3'
-        ],
+        backgroundColor: ['#FFF6D5', '#FFF6D5', '#FFF6D5', '#FFEDB3'],
         borderColor: '#1A1A1A',
-        borderWidth: 2.5,
+        borderWidth: 3,
         borderRadius: 8,
         borderSkipped: false,
         barPercentage: 0.55,
@@ -1518,33 +1282,33 @@ details summary {
           titleColor: '#1A1A1A',
           bodyColor: '#3A3A3A',
           borderColor: '#1A1A1A',
-          borderWidth: 2,
-          padding: 12,
+          borderWidth: 3,
+          padding: 14,
           displayColors: false,
-          titleFont: { weight: 'bold' },
-          bodyFont: { weight: 'bold' },
+          titleFont: { weight: 'bold', size: 13 },
+          bodyFont: { weight: 'bold', size: 13 },
           callbacks: {
-            label: ctx => '得分：' + ctx.raw + ' 分'
+            label: ctx => ' 得分：' + ctx.raw + ' 分'
           }
         }
       },
       scales: {
         x: {
-          ticks: { color: '#3A3A3A', font: { size: 13, weight: 'bold' } },
+          ticks: { color: '#3A3A3A', font: { size: 14, weight: 'bold' } },
           grid: { display: false },
-          border: { color: '#1A1A1A', width: 2 }
+          border: { color: '#1A1A1A', width: 2.5 }
         },
         y: {
           beginAtZero: true,
           max: 30,
           ticks: {
             color: '#7A7A7A',
-            font: { size: 11, weight: 'bold' },
+            font: { size: 12, weight: 'bold' },
             stepSize: 5,
             callback: v => v + ' 分'
           },
-          grid: { color: 'rgba(0,0,0,0.06)' },
-          border: { color: '#1A1A1A', width: 2 }
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          border: { color: '#1A1A1A', width: 2.5 }
         }
       },
       animation: { duration: 800, easing: 'easeOutBounce' }
