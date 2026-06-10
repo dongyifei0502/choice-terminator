@@ -149,7 +149,7 @@
       if (!username || !password) { errEl.textContent = '请填写用户名和密码'; errEl.style.display = ''; return; }
 
       ApiService.login(username, password).then(function(data) {
-        Store.setUser(data.user.username, data.user.role, data.token);
+        Store.setUser(data.token, data.user.username, data.user.role);
         updateUserBar();
         updateAdminButton();
         Router.navigate('home');
@@ -168,7 +168,7 @@
       if (password.length < 6) { errEl.textContent = '密码至少 6 位'; errEl.style.display = ''; return; }
 
       ApiService.register(username, password).then(function(data) {
-        Store.setUser(data.user.username, data.user.role, data.token);
+        Store.setUser(data.token, data.user.username, data.user.role);
         updateUserBar();
         updateAdminButton();
         Router.navigate('home');
