@@ -4,9 +4,10 @@ import os
 import bcrypt
 from flask import g
 
-DATABASE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db', 'data.db')
-SCHEMA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db', 'schema.sql')
-SEED_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'db', 'seed.sql')
+ROOT = os.path.dirname(os.path.dirname(__file__))
+DATABASE = os.path.join(ROOT, 'db', 'data.db')
+SCHEMA_PATH = os.path.join(ROOT, 'sql', 'schema.sql')
+SEED_PATH = os.path.join(ROOT, 'sql', 'seed.sql')
 
 
 def get_db():

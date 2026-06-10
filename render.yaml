@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: choice-terminator
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: RENDER
+        value: "1"
+    disk:
+      name: sqlite-data
+      mountPath: /opt/render/project/src/db
+      sizeGB: 1

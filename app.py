@@ -32,6 +32,9 @@ def index():
 
 
 if __name__ == '__main__':
+    import os
     init_db()
-    print('Choice Terminator — Server running: http://localhost:5000')
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('RENDER') is None
+    print('Choice Terminator — Server running on port ' + str(port))
+    app.run(host='0.0.0.0', port=port, debug=debug)
