@@ -13,11 +13,15 @@
     <!-- ========== 首页 ========== -->
     <section id="page-home" class="page-section page-row single">
       <div class="card card-cream">
+        <!-- 用户状态栏 -->
+        <div class="user-bar">
+          <span id="user-status"><button id="btn-goto-auth" class="btn btn-ghost btn-xs">👤 登录</button></span>
+        </div>
+
         <span class="hero-emoji">🎯</span>
         <div class="page-title">选择困难终结</div>
         <div class="page-subtitle">选择场景，输入 2-10 个选项，让数据帮你做决定</div>
 
-        <!-- 场景选择器 -->
         <div class="scene-selector" id="scene-selector">
           <button class="scene-btn" data-category="food">🍽️ 餐饮</button>
           <button class="scene-btn" data-category="shopping">🛒 购物</button>
@@ -25,27 +29,48 @@
           <button class="scene-btn active" data-category="general">📋 通用</button>
         </div>
 
-        <input
-          id="option-input"
-          class="input"
-          type="text"
-          placeholder="输入选项，用逗号分隔，如：选项A, 选项B, 选项C"
-          autofocus
-        >
-
+        <input id="option-input" class="input" type="text" placeholder="输入选项，用逗号分隔，如：选项A, 选项B, 选项C" autofocus>
         <div id="tags-container" class="tags-row">
           <span class="tags-empty">输入选项后将在此显示标签</span>
         </div>
 
         <div class="mt-28">
-          <button id="btn-start" class="btn btn-primary btn-block btn-disabled">
-            开始决策 →
-          </button>
+          <button id="btn-start" class="btn btn-primary btn-block btn-disabled">开始决策 →</button>
         </div>
 
         <div class="header-actions">
           <button id="btn-goto-history" class="btn btn-ghost btn-sm">📋 历史记录</button>
-          <button id="btn-goto-admin" class="btn btn-ghost btn-sm">⚙ 管理问题库</button>
+          <button id="btn-goto-admin" class="btn btn-ghost btn-sm" style="display:none;">⚙ 管理问题库</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 登录/注册页 ========== -->
+    <section id="page-auth" class="page-section page-row single" style="display:none;">
+      <div class="card" style="max-width:440px;margin:0 auto;">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login">登录</button>
+          <button class="auth-tab" data-tab="register">注册</button>
+        </div>
+
+        <!-- 登录表单 -->
+        <div id="auth-form-login" class="auth-form">
+          <input id="login-username" class="input" type="text" placeholder="用户名" style="margin-bottom:14px;">
+          <input id="login-password" class="input" type="password" placeholder="密码" style="margin-bottom:8px;">
+          <p id="login-error" style="color:#D94A3A;font-size:0.78rem;display:none;margin-bottom:12px;"></p>
+          <button id="btn-login" class="btn btn-primary btn-block">登录</button>
+        </div>
+
+        <!-- 注册表单 -->
+        <div id="auth-form-register" class="auth-form" style="display:none;">
+          <input id="reg-username" class="input" type="text" placeholder="用户名（2-20字符）" style="margin-bottom:14px;">
+          <input id="reg-password" class="input" type="password" placeholder="密码（至少6位）" style="margin-bottom:8px;">
+          <p id="reg-error" style="color:#D94A3A;font-size:0.78rem;display:none;margin-bottom:12px;"></p>
+          <button id="btn-register" class="btn btn-primary btn-block">注册</button>
+        </div>
+
+        <div class="flex-center mt-20">
+          <button id="btn-auth-back" class="btn btn-ghost btn-sm">← 返回首页</button>
         </div>
       </div>
     </section>
@@ -59,22 +84,15 @@
           </div>
           <span id="progress-text" class="progress-text">第 1 / 5 题</span>
         </div>
-
         <span id="quiz-weight-badge" class="badge badge-accent badge-lg mb-12" style="display:inline-flex;">权重 ×3</span>
         <div id="quiz-question-text" class="page-title mb-12">问题文本加载中...</div>
         <div class="page-subtitle">拖动滑块为每个选项打分</div>
-
         <hr class="divider-dashed">
-
-        <div id="quiz-sliders-container">
-          <!-- 滑块由 JS 动态渲染 -->
-        </div>
-
+        <div id="quiz-sliders-container"></div>
         <div class="slider-hint">
           <span>1 = 非常不符合</span>
           <span>5 = 非常符合</span>
         </div>
-
         <div class="flex-between mt-28">
           <button id="btn-prev" class="btn btn-ghost btn-sm">← 上一题</button>
           <button id="btn-next" class="btn btn-primary">下一题 →</button>
@@ -93,24 +111,16 @@
             <span class="badge badge-accent">🎲 随机选出（同分）</span>
           </div>
         </div>
-
-        <!-- 平局时：换一个按钮 -->
         <div id="result-tie-actions" class="flex-center" style="display:none;margin:12px 0;">
           <button id="btn-reroll" class="btn btn-sm btn-pink">🎲 换一个</button>
         </div>
-
-        <!-- 推荐理由 -->
         <div id="result-reason" class="reason-box">
           <strong>📝 推荐理由</strong><br>
           <span id="reason-text">--</span>
         </div>
-
-        <!-- 图表 -->
         <div class="chart-wrap">
           <canvas id="chartResult"></canvas>
         </div>
-
-        <!-- 得分明细 -->
         <details>
           <summary>▼ 点击展开得分明细</summary>
           <div class="admin-table-wrap">
@@ -120,7 +130,6 @@
             </table>
           </div>
         </details>
-
         <div class="flex-center mt-24">
           <button id="btn-restart" class="btn btn-ghost btn-sm">🔄 重新开始</button>
           <button id="btn-save-history" class="btn btn-primary">💾 保存到历史</button>
@@ -131,12 +140,13 @@
     <!-- ========== 历史页 ========== -->
     <section id="page-history" class="page-section page-row single" style="display:none;">
       <div class="card">
-        <div class="section-title">📋 历史决策</div>
+        <div class="flex-between mb-16">
+          <div class="section-title" style="margin-bottom:0;">📋 历史决策</div>
+          <button id="btn-history-back" class="btn btn-ghost btn-sm">← 返回首页</button>
+        </div>
         <div class="page-subtitle">最近做出的选择，点击可查看详情</div>
 
-        <div id="history-list" class="history-list mt-20">
-          <!-- JS 动态渲染 -->
-        </div>
+        <div id="history-list" class="history-list mt-20"></div>
 
         <div class="flex-between mt-24">
           <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -153,8 +163,6 @@
       <div class="card">
         <div class="section-title">⚙ 问题库管理</div>
         <div class="page-subtitle">增删改查问题，调整权重、场景分类与启用状态</div>
-
-        <!-- 分类筛选 -->
         <div class="scene-selector" id="admin-category-filter" style="margin-bottom:16px;">
           <button class="scene-btn scene-btn-sm active" data-category="all">全部</button>
           <button class="scene-btn scene-btn-sm" data-category="food">🍽️ 餐饮</button>
@@ -162,26 +170,14 @@
           <button class="scene-btn scene-btn-sm" data-category="travel">✈️ 旅行</button>
           <button class="scene-btn scene-btn-sm" data-category="general">📋 通用</button>
         </div>
-
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead>
-              <tr>
-                <th>#</th>
-                <th>场景</th>
-                <th>问题文本</th>
-                <th>权重</th>
-                <th>启用</th>
-                <th>操作</th>
-              </tr>
+              <tr><th>#</th><th>场景</th><th>问题文本</th><th>权重</th><th>启用</th><th>操作</th></tr>
             </thead>
-            <tbody id="admin-questions-tbody">
-              <!-- JS 动态渲染 -->
-            </tbody>
+            <tbody id="admin-questions-tbody"></tbody>
           </table>
         </div>
-
-        <!-- 添加新问题表单 -->
         <div class="add-form">
           <div class="field">
             <label>场景</label>
@@ -202,7 +198,6 @@
           </div>
           <button id="btn-add-question" class="btn btn-primary btn-sm">+ 添加</button>
         </div>
-
         <div class="flex-between mt-28">
           <button id="btn-admin-back" class="btn btn-ghost btn-sm">← 返回首页</button>
           <button id="btn-admin-save" class="btn btn-primary">💾 保存修改</button>
@@ -221,6 +216,7 @@
   <script src="js/services/scoreEngine.js"></script>
   <script src="js/services/reasonGenerator.js"></script>
   <script src="js/services/exportService.js"></script>
+  <script src="js/services/apiService.js"></script>
   <script src="js/components/progressBar.js"></script>
   <script src="js/components/slider.js"></script>
   <script src="js/components/barChart.js"></script>
