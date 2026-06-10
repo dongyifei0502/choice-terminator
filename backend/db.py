@@ -1,7 +1,7 @@
 """数据库连接模块（避免循环导入）"""
 import sqlite3
 import os
-import bcrypt
+import hashlib
 from flask import g
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
@@ -30,10 +30,10 @@ def init_db():
     for sql_file in (SCHEMA_PATH, SEED_PATH):
         with open(sql_file, 'r', encoding='utf-8') as f:
             db.executescript(f.read())
-    # 创建默认管理员 (admin / admin123)
+    # 管理员 admin / admin123 (SHA-256)
     existing = db.execute("SELECT id FROM users WHERE username = 'admin'").fetchone()
     if not existing:
-        hashed = bcrypt.hashpw('admin123'.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        hashed = hashlib.sha256('ct2026:admin123:salt'.encode()).hexdigest()
         db.execute("INSERT INTO users (username, password, role) VALUES ('admin', ?, 'admin')", (hashed,))
     db.commit()
     db.close()

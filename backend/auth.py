@@ -1,24 +1,54 @@
-"""认证模块：注册 / 登录 / JWT / 用户管理"""
-import bcrypt
-import jwt
-import datetime
+"""认证模块：注册 / 登录 / 简易令牌 / 用户管理
+零外部依赖：hashlib + hmac 替代 bcrypt + PyJWT
+"""
+import hashlib
+import hmac
+import json
+import time
+import base64
 from functools import wraps
 from flask import Blueprint, request, jsonify
 from backend.db import get_db
 
 auth_bp = Blueprint('auth', __name__)
 JWT_SECRET = 'choice-terminator-jwt-2026'
-JWT_EXPIRY_HOURS = 72
+
+
+def hash_pwd(password):
+    """SHA-256 + 固定盐"""
+    salted = 'ct2026:' + password + ':salt'
+    return hashlib.sha256(salted.encode()).hexdigest()
 
 
 def make_token(user_id, username, role):
-    payload = {
-        'user_id': user_id,
-        'username': username,
-        'role': role,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=JWT_EXPIRY_HOURS)
-    }
-    return jwt.encode(payload, JWT_SECRET, algorithm='HS256')
+    """简易 HMAC 令牌"""
+    header = base64.urlsafe_b64encode(json.dumps({'alg': 'HS256', 'typ': 'JWT'}).encode()).decode().rstrip('=')
+    payload = base64.urlsafe_b64encode(json.dumps({
+        'user_id': user_id, 'username': username, 'role': role,
+        'exp': int(time.time()) + 72 * 3600
+    }).encode()).decode().rstrip('=')
+    sig = hmac.new(JWT_SECRET.encode(), (header + '.' + payload).encode(), hashlib.sha256).hexdigest()[:32]
+    return header + '.' + payload + '.' + sig
+
+
+def decode_token(token):
+    """验证令牌，返回 payload 或 None"""
+    try:
+        parts = token.split('.')
+        if len(parts) != 3:
+            return None
+        header, payload, sig = parts
+        expected = hmac.new(JWT_SECRET.encode(), (header + '.' + payload).encode(), hashlib.sha256).hexdigest()[:32]
+        if sig != expected:
+            return None
+        # 补全 padding
+        payload += '=' * (4 - len(payload) % 4)
+        data = json.loads(base64.urlsafe_b64decode(payload))
+        if data.get('exp', 0) < time.time():
+            return None
+        return data
+    except Exception:
+        return None
 
 
 def login_required(f):
@@ -27,19 +57,16 @@ def login_required(f):
         token = request.headers.get('Authorization', '').replace('Bearer ', '')
         if not token:
             return jsonify({'error': '请先登录'}), 401
-        try:
-            payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
-            db = get_db()
-            user = db.execute('SELECT id, banned FROM users WHERE id = ?', (payload['user_id'],)).fetchone()
-            if not user:
-                return jsonify({'error': '用户不存在'}), 401
-            if user['banned']:
-                return jsonify({'error': '账号已被封禁'}), 403
-            request.user = payload
-        except jwt.ExpiredSignatureError:
+        payload = decode_token(token)
+        if not payload:
             return jsonify({'error': '登录已过期，请重新登录'}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({'error': '无效的登录凭证'}), 401
+        db = get_db()
+        user = db.execute('SELECT id, banned FROM users WHERE id = ?', (payload['user_id'],)).fetchone()
+        if not user:
+            return jsonify({'error': '用户不存在'}), 401
+        if user['banned']:
+            return jsonify({'error': '账号已被封禁'}), 403
+        request.user = payload
         return f(*args, **kwargs)
     return decorated
 
@@ -54,7 +81,6 @@ def admin_required(f):
     return decorated
 
 
-# ── 注册 ──
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -73,7 +99,7 @@ def register():
     if existing:
         return jsonify({'error': '用户名已被注册'}), 409
 
-    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    hashed = hash_pwd(password)
     total_users = db.execute('SELECT COUNT(*) as cnt FROM users').fetchone()['cnt']
     role = 'admin' if username == 'admin' or total_users == 0 else 'user'
 
@@ -88,7 +114,6 @@ def register():
     return jsonify({'token': token, 'user': {'id': user_id, 'username': username, 'role': role}}), 201
 
 
-# ── 登录 ──
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -106,7 +131,7 @@ def login():
     if user['banned']:
         return jsonify({'error': '账号已被封禁，请联系管理员'}), 403
 
-    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+    if hash_pwd(password) != user['password']:
         return jsonify({'error': '用户名或密码错误'}), 401
 
     token = make_token(user['id'], user['username'], user['role'])
@@ -116,14 +141,12 @@ def login():
     })
 
 
-# ── 当前用户信息 ──
 @auth_bp.route('/me', methods=['GET'])
 @login_required
 def me():
     return jsonify({'user': request.user})
 
 
-# ── 管理员：用户列表 ──
 @auth_bp.route('/admin/users', methods=['GET'])
 @admin_required
 def list_users():
@@ -133,7 +156,6 @@ def list_users():
     return jsonify({'users': users})
 
 
-# ── 管理员：封禁用户 ──
 @auth_bp.route('/admin/users/<int:user_id>/ban', methods=['PUT'])
 @admin_required
 def ban_user(user_id):
@@ -148,7 +170,6 @@ def ban_user(user_id):
     return jsonify({'ok': True})
 
 
-# ── 管理员：解封用户 ──
 @auth_bp.route('/admin/users/<int:user_id>/unban', methods=['PUT'])
 @admin_required
 def unban_user(user_id):
