@@ -8,658 +8,703 @@
 <style>
 /* ============================================================
    DESIGN SYSTEM — 选择困难终结
-   参考风格：深色底板 + 卡片层级 + 紫蓝青渐变点缀
+   风格：暖色手绘 · 粗黑描边 · 扁平原色 · 圆角柔和
+   配色：米白 + 浅黄 + 浅粉低饱和暖色 + 黑色轮廓
    ============================================================ */
 
 :root {
-  --bg-root:       #0B0E17;
-  --bg-card:       #141824;
-  --bg-card-hover: #1A1F2E;
-  --bg-input:      #0E111A;
-  --border:        rgba(255,255,255,0.07);
-  --border-focus:  rgba(99,102,241,0.45);
-  --text-primary:  #F1F3F9;
-  --text-secondary:#9CA3AF;
-  --text-muted:    #5B6270;
-  --accent-start:  #6366F1;
-  --accent-mid:    #4F6EF7;
-  --accent-end:    #06B6D4;
-  --accent-gradient: linear-gradient(135deg, #6366F1, #4F6EF7 40%, #06B6D4);
-  --green:         #10B981;
-  --orange:        #F59E0B;
-  --red:           #EF4444;
-  --radius-sm:     8px;
-  --radius:        12px;
-  --radius-lg:     16px;
-  --radius-xl:     20px;
-  --shadow-card:   0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.25);
-  --shadow-lg:     0 4px 32px rgba(99,102,241,0.12), 0 8px 64px rgba(0,0,0,0.4);
-  --font:          'Inter', 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  --cream:        #FFFBF5;
+  --cream-deep:   #FFF7EC;
+  --yellow-pale:  #FFF6D5;
+  --yellow-warm:  #FFEDB3;
+  --pink-pale:    #FFEFEC;
+  --pink-warm:    #FFE0DA;
+  --pink-deep:    #FFCBBF;
+  --mint-pale:    #EDF8F0;
+  --mint-warm:    #C8ECD4;
+  --lavender:     #F3EEFB;
+  --peach:        #FFECD6;
+  --black:        #1A1A1A;
+  --black-soft:   #3A3A3A;
+  --gray-mid:     #7A7A7A;
+  --gray-light:   #B0B0B0;
+  --stroke:       2.5px;
+  --stroke-thin:  1.5px;
+  --radius-sm:    12px;
+  --radius:       18px;
+  --radius-lg:    22px;
+  --radius-xl:    26px;
+  --radius-full:  9999px;
+  --font-heading: 'DM Sans', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-body:    'DM Sans', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --shadow-soft:  0 4px 0 rgba(0,0,0,0.08);
+  --shadow-card:  0 4px 0 rgba(0,0,0,0.1);
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: var(--bg-root);
-  color: var(--text-primary);
-  font-family: var(--font);
+  background: var(--cream);
+  color: var(--black);
+  font-family: var(--font-body);
   min-height: 100vh;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(255,224,200,0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(255,200,200,0.2) 0%, transparent 50%);
 }
 
 /* ---- Layout ---- */
 .demo-container {
-  max-width: 1440px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 32px 24px 80px;
+  padding: 28px 20px 80px;
 }
 
-.demo-header {
-  text-align: center;
-  padding: 48px 24px 56px;
+/* ---- Phone Frame ---- */
+.phone-frame {
+  width: 420px;
+  margin: 0 auto 60px;
+  background: var(--cream);
+  border: var(--stroke) solid var(--black);
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card), 0 12px 40px rgba(0,0,0,0.1);
+  position: relative;
 }
 
-.demo-header h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 8px;
+.phone-frame.wide {
+  width: 540px;
 }
 
-.demo-header .subtitle {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-}
-
-.page-section {
-  margin-bottom: 72px;
-}
-
-.page-section:last-child { margin-bottom: 0; }
-
-.section-label {
+/* ---- Status Bar ---- */
+.status-bar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
+  padding: 14px 28px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: 0.02em;
 }
 
-.section-label .dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--accent-gradient);
+.status-icons { display: flex; gap: 6px; align-items: center; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--black); }
+
+/* ---- Screen Content ---- */
+.screen-content {
+  padding: 16px 24px 28px;
 }
 
-.section-label h2 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+/* ---- Bottom Nav ---- */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 14px 20px 22px;
+  border-top: var(--stroke-thin) solid var(--black);
+  background: var(--cream-deep);
 }
 
-/* ---- Common Components ---- */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px 32px;
-  box-shadow: var(--shadow-card);
-  transition: border-color 0.2s;
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--gray-mid);
+  cursor: pointer;
+  transition: color 0.15s;
 }
 
-.card:hover { border-color: rgba(255,255,255,0.12); }
+.nav-item.active {
+  color: var(--black);
+}
 
-.card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
+.nav-item .nav-icon {
+  font-size: 1.3rem;
+}
+
+.nav-item.active .nav-icon {
+  position: relative;
+}
+
+.nav-item.active .nav-icon::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 50%;
+  transform: translateX(-50%);
+  width: 16px; height: 3px;
+  background: var(--black);
+  border-radius: 2px;
+}
+
+/* ---- Typography ---- */
+.page-title {
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
+  font-size: 0.82rem;
+  color: var(--gray-mid);
+  font-weight: 500;
   margin-bottom: 20px;
-  color: var(--text-primary);
 }
 
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* ---- Components ---- */
+
+/* Card */
+.card {
+  background: #fff;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s;
+}
+
+.card:hover { transform: translateY(-1px); }
+
+.card-pink  { background: var(--pink-pale); }
+.card-yellow { background: var(--yellow-pale); }
+.card-mint   { background: var(--mint-pale); }
+.card-cream  { background: var(--cream); }
+
+/* Inline card groups */
+.card-row {
+  display: flex;
+  gap: 14px;
+}
+
+.card-row > * { flex: 1; }
+
+/* Button */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  border: none;
-  border-radius: var(--radius);
-  font-family: var(--font);
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 12px 28px;
+  gap: 6px;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 12px 26px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
   white-space: nowrap;
+  background: #fff;
+  color: var(--black);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
 }
 
 .btn-primary {
-  background: var(--accent-gradient);
-  color: #fff;
-  box-shadow: 0 2px 12px rgba(99,102,241,0.3);
+  background: var(--yellow-warm);
 }
 
-.btn-primary:hover {
-  box-shadow: 0 4px 24px rgba(99,102,241,0.45);
-  transform: translateY(-1px);
+.btn-primary:hover { background: #FFE7A0; }
+
+.btn-pink {
+  background: var(--pink-pale);
 }
 
-.btn-secondary {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border);
+.btn-pink:hover { background: var(--pink-warm); }
+
+.btn-mint {
+  background: var(--mint-pale);
 }
 
-.btn-secondary:hover {
-  background: var(--bg-card-hover);
-  border-color: rgba(255,255,255,0.2);
-}
+.btn-mint:hover { background: var(--mint-warm); }
 
 .btn-ghost {
   background: transparent;
-  color: var(--text-secondary);
-  padding: 8px 16px;
+  border: none;
+  box-shadow: none;
+  color: var(--gray-mid);
+  font-weight: 600;
+  padding: 8px 14px;
 }
 
-.btn-ghost:hover { color: var(--text-primary); }
+.btn-ghost:hover { color: var(--black); }
 
 .btn-disabled {
   opacity: 0.35;
   pointer-events: none;
-  cursor: not-allowed;
 }
 
-.btn-sm { padding: 6px 14px; font-size: 0.8rem; }
-.btn-xs { padding: 4px 10px; font-size: 0.75rem; border-radius: var(--radius-sm); }
+.btn-sm { padding: 8px 16px; font-size: 0.78rem; }
+.btn-xs { padding: 5px 11px; font-size: 0.72rem; border-radius: var(--radius-full); border-width: var(--stroke-thin); }
 
-/* ---- Tags ---- */
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  background: rgba(99,102,241,0.12);
-  color: #A5B4FC;
-  border: 1px solid rgba(99,102,241,0.2);
-}
-
-.tag.teal  { background: rgba(6,182,212,0.12);  color: #67E8F9; border-color: rgba(6,182,212,0.2); }
-.tag.green { background: rgba(16,185,129,0.12);  color: #6EE7B7; border-color: rgba(16,185,129,0.2); }
-.tag.amber { background: rgba(245,158,11,0.12);  color: #FCD34D; border-color: rgba(245,158,11,0.2); }
-.tag.pink  { background: rgba(236,72,153,0.12);  color: #F9A8D4; border-color: rgba(236,72,153,0.2); }
-.tag.slate { background: rgba(148,163,184,0.1);  color: #94A3B8; border-color: rgba(148,163,184,0.15); }
-
-.tag-close {
-  cursor: pointer;
-  opacity: 0.6;
-  font-size: 0.75rem;
-  line-height: 1;
-}
-.tag-close:hover { opacity: 1; }
-
-/* ---- Badge ---- */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 10px;
-  border-radius: 9999px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-
-.badge-accent {
-  background: var(--accent-gradient);
-  color: #fff;
-}
-
-.badge-outline {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-}
+.btn-block { width: 100%; }
 
 /* ---- Input ---- */
 .input {
   width: 100%;
   padding: 14px 18px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-primary);
-  font-family: var(--font);
-  font-size: 0.95rem;
+  background: #fff;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-full);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 }
 
 .input:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.06);
 }
 
-.input::placeholder { color: var(--text-muted); }
+.input::placeholder { color: var(--gray-light); }
 
-/* ---- Slider ---- */
-.slider-group {
+/* ---- Tags ---- */
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  min-height: 28px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: #fff;
+  color: var(--black);
+}
+
+.tag.yellow { background: var(--yellow-pale); }
+.tag.pink   { background: var(--pink-pale); }
+.tag.mint   { background: var(--mint-pale); }
+.tag.peach  { background: var(--peach); }
+
+.tag-close {
+  cursor: pointer;
+  font-size: 0.7rem;
+  opacity: 0.5;
+}
+.tag-close:hover { opacity: 0.8; }
+
+.tags-empty {
+  color: var(--gray-light);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+/* ---- Badge ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border: var(--stroke-thin) solid var(--black);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #fff;
+}
+
+.badge-accent {
+  background: var(--yellow-warm);
+}
+
+.badge-lg {
+  font-size: 0.78rem;
+  padding: 5px 14px;
+}
+
+/* ---- Progress ---- */
+.progress-wrap {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  margin-bottom: 6px;
 }
 
-.slider-group .slider-label {
-  min-width: 80px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-primary);
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: #fff;
+  border: var(--stroke-thin) solid var(--black);
+  border-radius: var(--radius-full);
+  overflow: hidden;
 }
 
-.slider-group input[type="range"] {
+.progress-fill {
+  height: 100%;
+  background: var(--yellow-warm);
+  border-radius: var(--radius-full);
+  transition: width 0.3s;
+}
+
+.progress-text {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gray-mid);
+  min-width: 90px;
+  text-align: right;
+}
+
+/* ---- Slider ---- */
+.slider-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #fff;
+  border: var(--stroke-thin) solid var(--black);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+}
+
+.slider-label {
+  min-width: 70px;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.slider-item input[type="range"] {
   flex: 1;
   -webkit-appearance: none;
   appearance: none;
   height: 6px;
   border-radius: 3px;
-  background: rgba(255,255,255,0.1);
+  background: #E8E5DF;
+  border: 1px solid rgba(0,0,0,0.15);
   outline: none;
 }
 
-.slider-group input[type="range"]::-webkit-slider-thumb {
+.slider-item input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 26px; height: 26px;
   border-radius: 50%;
-  background: var(--accent-gradient);
+  background: #fff;
+  border: var(--stroke) solid var(--black);
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(99,102,241,0.4);
-  transition: box-shadow 0.2s;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+  transition: transform 0.1s;
 }
 
-.slider-group input[type="range"]::-webkit-slider-thumb:hover {
-  box-shadow: 0 4px 16px rgba(99,102,241,0.55);
+.slider-item input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.1);
 }
 
 .slider-score {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px; height: 36px;
+  min-width: 34px; height: 34px;
+  border: var(--stroke) solid var(--black);
   border-radius: var(--radius-sm);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.9rem;
-  background: rgba(99,102,241,0.12);
-  color: #A5B4FC;
+  background: #fff;
 }
 
-/* ---- Progress Bar ---- */
-.progress-wrap {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.progress-track {
-  flex: 1;
-  height: 8px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  border-radius: 4px;
-  background: var(--accent-gradient);
-  transition: width 0.3s;
-}
-
-.progress-text {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  min-width: 90px;
-  text-align: right;
+.slider-score.high {
+  background: var(--yellow-warm);
 }
 
 /* ---- Divider ---- */
 .divider {
   border: none;
-  border-top: 1px solid var(--border);
-  margin: 24px 0;
+  border-top: var(--stroke-thin) solid var(--black);
+  margin: 18px 0;
+  opacity: 0.3;
 }
 
-/* ---- Row / Grid ---- */
-.page-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-  gap: 28px;
+.divider-dashed {
+  border-top: 2px dashed rgba(0,0,0,0.2);
+  margin: 20px 0;
 }
 
-.page-row.single { grid-template-columns: 1fr; max-width: 640px; margin: 0 auto; }
-
-.full-width { grid-column: 1 / -1; }
-
-/* ---- Specific Page Skins ---- */
-
-/* Home */
-.home-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.home-card::before {
-  content: '';
-  position: absolute;
-  top: -80px; right: -80px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.home-icon {
-  font-size: 2.5rem;
-  margin-bottom: 8px;
-}
-
-.tags-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-  min-height: 28px;
-}
-
-.tags-empty {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-}
-
-/* Quiz */
-.quiz-question {
-  margin-bottom: 28px;
-}
-
-.quiz-question h3 {
-  font-size: 1.25rem;
-  margin-bottom: 6px;
-}
-
-.quiz-sliders {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.quiz-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 32px;
-}
-
-/* Result */
+/* ---- Result Hero ---- */
 .result-hero {
   text-align: center;
-  padding: 16px 0 28px;
+  padding: 8px 0 16px;
 }
 
-.result-icon { font-size: 3rem; margin-bottom: 4px; }
+.result-icon {
+  font-size: 3rem;
+  margin-bottom: 2px;
+}
 
 .result-winner {
-  font-size: 2rem;
-  font-weight: 800;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  padding: 6px 28px;
+  display: inline-block;
+  background: var(--yellow-warm);
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-full);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.1);
 }
 
 .result-score {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-top: 2px;
+  font-size: 0.88rem;
+  color: var(--gray-mid);
+  font-weight: 600;
+  margin-top: 8px;
 }
 
+/* Reason box */
 .reason-box {
-  background: rgba(99,102,241,0.06);
-  border: 1px solid rgba(99,102,241,0.15);
+  background: #fff;
+  border: var(--stroke) solid var(--black);
   border-radius: var(--radius);
-  padding: 18px 22px;
-  margin: 24px 0;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  padding: 16px 20px;
+  margin: 20px 0;
+  font-size: 0.84rem;
+  color: var(--black-soft);
   line-height: 1.7;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.06);
 }
 
+.reason-box strong {
+  font-weight: 800;
+}
+
+/* Chart */
 .chart-wrap {
-  margin: 24px 0;
-  padding: 16px;
-  background: rgba(255,255,255,0.015);
+  margin: 16px 0;
+  padding: 16px 8px;
+  background: #fff;
+  border: var(--stroke) solid var(--black);
   border-radius: var(--radius);
-  height: 280px;
+  height: 240px;
   position: relative;
 }
 
 .chart-wrap canvas { width: 100% !important; height: 100% !important; }
 
-.result-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* Score detail table */
+/* Score table */
 .score-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 12px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  margin-top: 10px;
 }
 
 .score-table th, .score-table td {
-  padding: 10px 14px;
+  padding: 8px 10px;
   text-align: center;
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--stroke-thin) solid var(--black);
 }
 
 .score-table th {
-  color: var(--text-muted);
-  font-weight: 500;
-  font-size: 0.78rem;
+  font-weight: 700;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
+  color: var(--gray-mid);
 }
 
-.score-table td { color: var(--text-secondary); }
-.score-table td.highlight { color: #A5B4FC; font-weight: 700; }
+.score-table td { font-weight: 500; }
+.score-table td.highlight { font-weight: 800; background: var(--yellow-pale); border-radius: 4px; }
 
-/* History */
+/* History list */
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .history-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 22px;
-  background: rgba(255,255,255,0.015);
-  border: 1px solid var(--border);
+  padding: 16px 18px;
+  background: #fff;
+  border: var(--stroke) solid var(--black);
   border-radius: var(--radius);
-  transition: all 0.2s;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+  transition: transform 0.15s;
 }
 
-.history-item:hover {
-  background: var(--bg-card-hover);
-  border-color: rgba(255,255,255,0.14);
-}
+.history-item:hover { transform: translateY(-1px); }
 
-.history-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+.history-meta { display: flex; flex-direction: column; gap: 3px; }
 
 .history-time {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  font-size: 0.72rem;
+  color: var(--gray-mid);
+  font-weight: 600;
 }
 
 .history-options {
-  font-size: 0.9rem;
-  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .history-result {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 600;
-  color: #A5B4FC;
+  font-weight: 800;
+  font-size: 0.88rem;
 }
 
-.history-actions-row {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
+.history-result .crown { font-size: 1.1rem; }
 
-/* Admin */
-.admin-table-wrap {
-  overflow-x: auto;
-}
+/* Admin table */
+.admin-table-wrap { overflow-x: auto; }
 
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
 }
 
 .admin-table th {
   text-align: left;
-  padding: 12px 14px;
-  color: var(--text-muted);
-  font-weight: 500;
-  font-size: 0.75rem;
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.04em;
+  color: var(--gray-mid);
+  border-bottom: var(--stroke) solid var(--black);
 }
 
 .admin-table td {
-  padding: 14px 14px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-secondary);
+  padding: 12px 14px;
+  border-bottom: var(--stroke-thin) solid var(--black);
+  font-weight: 500;
 }
 
 .admin-table tr:last-child td { border-bottom: none; }
 
-.admin-table .weight-badge {
+.weight-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px; height: 28px;
+  width: 36px; height: 28px;
+  border: var(--stroke) solid var(--black);
   border-radius: var(--radius-sm);
-  font-weight: 700;
-  font-size: 0.8rem;
+  font-weight: 800;
+  font-size: 0.78rem;
 }
 
-.weight-1 { background: rgba(148,163,184,0.12); color: #94A3B8; }
-.weight-2 { background: rgba(245,158,11,0.15); color: #FCD34D; }
-.weight-3 { background: rgba(99,102,241,0.18); color: #A5B4FC; }
+.weight-1 { background: #fff; }
+.weight-2 { background: var(--yellow-pale); }
+.weight-3 { background: var(--yellow-warm); }
 
-.admin-table .toggle {
-  width: 40px; height: 22px;
-  border-radius: 9999px;
-  background: rgba(255,255,255,0.12);
+/* Toggle switch */
+.toggle {
+  width: 44px; height: 26px;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-full);
+  background: #fff;
   position: relative;
   cursor: pointer;
-  transition: background 0.25s;
+  transition: background 0.2s;
 }
 
-.admin-table .toggle.on {
-  background: var(--accent-gradient);
-}
+.toggle.on { background: var(--mint-warm); }
 
-.admin-table .toggle::after {
+.toggle::after {
   content: '';
   position: absolute;
   top: 3px; left: 3px;
   width: 16px; height: 16px;
   border-radius: 50%;
-  background: #fff;
-  transition: transform 0.25s;
+  background: var(--black);
+  border: 1px solid rgba(0,0,0,0.3);
+  transition: transform 0.2s;
 }
 
-.admin-table .toggle.on::after {
+.toggle.on::after {
   transform: translateX(18px);
 }
 
+/* Action links */
 .action-link {
-  color: var(--text-secondary);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   cursor: pointer;
   margin-right: 14px;
-  transition: color 0.15s;
+  color: var(--black-soft);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
 }
 
-.action-link:hover { color: var(--text-primary); }
-.action-link.danger:hover { color: var(--red); }
+.action-link:hover { text-decoration: underline; }
+.action-link.danger:hover { color: #D94A3A; }
 
+/* Add form */
 .add-form {
   display: flex;
   align-items: flex-end;
-  gap: 14px;
-  margin-top: 20px;
-  padding: 20px;
-  background: rgba(255,255,255,0.015);
-  border: 1px dashed var(--border);
+  gap: 12px;
+  margin-top: 18px;
+  padding: 18px 20px;
+  background: #fff;
+  border: 2px dashed var(--black);
   border-radius: var(--radius);
 }
 
-.add-form .field { display: flex; flex-direction: column; gap: 6px; }
+.add-form .field { display: flex; flex-direction: column; gap: 5px; }
 
 .add-form .field label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
+  color: var(--gray-mid);
 }
 
 .add-form .field input {
   padding: 10px 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-family: var(--font);
-  font-size: 0.85rem;
+  background: #fff;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 500;
   outline: none;
-  width: 240px;
+  width: 200px;
 }
 
-.add-form .field input:focus {
-  border-color: var(--border-focus);
-}
-
-.add-form .field input.weight-input { width: 60px; text-align: center; }
+.add-form .field input.weight-input { width: 56px; text-align: center; }
 
 /* Password modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(255,251,245,0.85);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -667,49 +712,121 @@ body {
 }
 
 .modal-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 32px;
-  width: 380px;
-  box-shadow: var(--shadow-lg);
+  background: #fff;
+  border: var(--stroke) solid var(--black);
+  border-radius: var(--radius-xl);
+  padding: 32px 28px;
+  width: 340px;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.1);
   text-align: center;
 }
 
-.modal-box h3 { margin-bottom: 20px; }
+.modal-box h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
 
-.modal-box .input { margin-bottom: 16px; }
+/* Home variants */
+.hero-emoji {
+  font-size: 3.2rem;
+  display: block;
+  margin-bottom: 6px;
+}
 
-/* Footer nav */
-.footer-nav {
+.header-actions {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: center;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: var(--stroke-thin) solid var(--black);
 }
 
-/* State annotations */
-.state-tag {
-  display: inline-flex;
+/* Page section labels */
+.section-label {
+  display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  padding: 2px 8px;
-  border: 1px dashed rgba(255,255,255,0.1);
-  border-radius: 4px;
-  margin-left: 10px;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--black);
 }
 
-/* Responsive */
-@media (max-width: 960px) {
-  .page-row { grid-template-columns: 1fr; }
-  .demo-container { padding: 16px 12px 48px; }
-  .card { padding: 20px 18px; }
-  .add-form { flex-wrap: wrap; }
-  .add-form .field input { width: 100%; }
+.section-label .dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--yellow-warm);
+  border: var(--stroke-thin) solid var(--black);
+}
+
+.section-label h2 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.state-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border: var(--stroke-thin) solid var(--black);
+  border-radius: var(--radius-full);
+  background: var(--cream-deep);
+  color: var(--gray-mid);
+  margin-left: auto;
+}
+
+/* Spacing */
+.mt-8  { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+.mt-24 { margin-top: 24px; }
+.mt-28 { margin-top: 28px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+
+/* Detail summary */
+details summary {
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 8px 0;
+  cursor: pointer;
+  color: var(--black-soft);
+}
+
+/* Footer */
+.demo-footer {
+  text-align: center;
+  padding: 32px 0 12px;
+  color: var(--gray-mid);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 500px) {
+  .phone-frame, .phone-frame.wide { width: 100%; border-radius: 24px; }
+  .screen-content { padding: 12px 16px 24px; }
+  .status-bar { padding: 10px 20px 6px; }
+}
+
+/* ---- Page section outer ---- */
+.page-section {
+  margin-bottom: 64px;
+}
+.page-section:last-child { margin-bottom: 0; }
+
+/* ---- Hand-drawn touch: slightly irregular shadows on some cards ---- */
+.card-doodle {
+  box-shadow:
+    3px 3px 0 rgba(0,0,0,0.08),
+    -1px -1px 0 rgba(0,0,0,0.03);
 }
 </style>
 </head>
@@ -718,75 +835,121 @@ body {
 <div class="demo-container">
 
   <!-- ======================== HEADER ======================== -->
-  <header class="demo-header">
-    <h1>🎯 选择困难终结</h1>
-    <p class="subtitle">Design Demo — 5 个主页面 · 核心状态展示 · 配色 / 组件 / 布局</p>
-  </header>
+  <div style="text-align:center;padding:32px 24px 44px;">
+    <span style="font-size:2.8rem;display:block;margin-bottom:4px;">🎯</span>
+    <h1 style="font-family:var(--font-heading);font-size:2rem;font-weight:900;letter-spacing:-0.02em;margin-bottom:4px;">选择困难终结</h1>
+    <p style="color:var(--gray-mid);font-size:0.92rem;font-weight:600;">
+      Design Demo — 暖色手绘 · 粗黑描边 · 5 页面 · 核心状态
+    </p>
+  </div>
 
   <!-- ======================== 1. HOME ======================== -->
-  <section class="page-section" id="page-home">
+  <section class="page-section">
     <div class="section-label">
       <span class="dot"></span>
       <h2>页面 1 · 首页</h2>
-      <span class="state-tag">初始状态</span>
+      <span class="state-tag">初始 / 已输入</span>
     </div>
 
-    <div class="page-row single">
+    <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;">
+
       <!-- 状态 A：未输入 -->
-      <div class="card home-card">
-        <div class="home-icon">🎯</div>
-        <div class="card-title">选择困难终结</div>
-        <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:20px;">
-          输入 2-10 个选项，让数据帮你做决定
-        </p>
-
-        <input class="input" type="text" placeholder="输入选项，用逗号或空格分隔，如：火锅, 烧烤, 日料" value="">
-
-        <div class="tags-row">
-          <span class="tags-empty">输入选项后将在此显示标签</span>
+      <div class="phone-frame">
+        <!-- status bar -->
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <span class="status-dot"></span>
+            <span class="status-dot" style="width:4px;"></span>
+            <span>▮▮▮▮</span>
+          </span>
         </div>
 
-        <div style="margin-top:28px;">
-          <button class="btn btn-primary btn-disabled" style="width:100%;">开始决策 →</button>
+        <div class="screen-content">
+          <span class="hero-emoji">🎯</span>
+          <div class="page-title">选择困难<br>终结</div>
+          <div class="page-subtitle">输入选项，让数据帮你做决定</div>
+
+          <input class="input" type="text" placeholder="火锅, 烧烤, 日料..." value="">
+
+          <div class="tags-row">
+            <span class="tags-empty">输入后自动解析为标签 →</span>
+          </div>
+
+          <div class="mt-24">
+            <button class="btn btn-primary btn-block btn-disabled">开始决策 →</button>
+          </div>
+
+          <div class="header-actions">
+            <button class="btn btn-ghost btn-sm">📋 历史</button>
+            <button class="btn btn-ghost btn-sm">⚙ 管理</button>
+          </div>
         </div>
 
-        <div class="footer-nav">
-          <a class="btn btn-ghost btn-sm" href="#page-history">📋 历史记录</a>
-          <a class="btn btn-ghost btn-sm" href="#page-admin">⚙ 管理</a>
+        <!-- bottom nav -->
+        <div class="bottom-nav">
+          <div class="nav-item active">
+            <span class="nav-icon">🏠</span> 首页
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📝</span> 决策
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📋</span> 历史
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">⚙</span> 设置
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 状态 B：已输入选项（有标签） -->
-    <div style="margin-top:28px;">
-      <div class="section-label">
-        <span class="dot"></span>
-        <span style="font-size:0.85rem;color:var(--text-secondary);">状态变体：已输入选项，标签展示</span>
-      </div>
-      <div class="page-row single">
-        <div class="card home-card">
-          <div class="home-icon">🎯</div>
-          <div class="card-title">选择困难终结</div>
-          <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:20px;">
-            输入 2-10 个选项，让数据帮你做决定
-          </p>
+      <!-- 状态 B：已输入选项 -->
+      <div class="phone-frame">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <span class="status-dot"></span>
+            <span class="status-dot" style="width:4px;"></span>
+            <span>▮▮▮▮</span>
+          </span>
+        </div>
+
+        <div class="screen-content">
+          <span class="hero-emoji">🎯</span>
+          <div class="page-title">选择困难<br>终结</div>
+          <div class="page-subtitle">输入选项，让数据帮你做决定</div>
 
           <input class="input" type="text" value="火锅, 烧烤, 日料, 沙拉">
 
           <div class="tags-row">
-            <span class="tag">火锅 <span class="tag-close">✕</span></span>
-            <span class="tag teal">烧烤 <span class="tag-close">✕</span></span>
-            <span class="tag green">日料 <span class="tag-close">✕</span></span>
-            <span class="tag amber">沙拉 <span class="tag-close">✕</span></span>
+            <span class="tag yellow">火锅 ✕</span>
+            <span class="tag pink">烧烤 ✕</span>
+            <span class="tag mint">日料 ✕</span>
+            <span class="tag peach">沙拉 ✕</span>
           </div>
 
-          <div style="margin-top:28px;">
-            <button class="btn btn-primary" style="width:100%;">开始决策 →</button>
+          <div class="mt-24">
+            <button class="btn btn-primary btn-block">开始决策 →</button>
           </div>
 
-          <div class="footer-nav">
-            <a class="btn btn-ghost btn-sm" href="#page-history">📋 历史记录</a>
-            <a class="btn btn-ghost btn-sm" href="#page-admin">⚙ 管理</a>
+          <div class="header-actions">
+            <button class="btn btn-ghost btn-sm">📋 历史</button>
+            <button class="btn btn-ghost btn-sm">⚙ 管理</button>
+          </div>
+        </div>
+
+        <div class="bottom-nav">
+          <div class="nav-item active">
+            <span class="nav-icon">🏠</span> 首页
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📝</span> 决策
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📋</span> 历史
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">⚙</span> 设置
           </div>
         </div>
       </div>
@@ -794,90 +957,193 @@ body {
   </section>
 
   <!-- ======================== 2. QUIZ ======================== -->
-  <section class="page-section" id="page-quiz">
+  <section class="page-section">
     <div class="section-label">
       <span class="dot"></span>
       <h2>页面 2 · 问答页</h2>
-      <span class="state-tag">答题中 — 第 2 题 / 共 5 题</span>
+      <span class="state-tag">第 2 题 / 共 5 题</span>
     </div>
 
-    <div class="page-row single">
-      <div class="card">
-        <!-- Progress -->
-        <div class="progress-wrap" style="margin-bottom:28px;">
-          <div class="progress-track">
-            <div class="progress-fill" style="width:40%;"></div>
+    <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;">
+
+      <!-- Quiz mid -->
+      <div class="phone-frame">
+        <div class="status-bar">
+          <span>9:42</span>
+          <span class="status-icons">
+            <span class="status-dot"></span>
+            <span class="status-dot" style="width:4px;"></span>
+            <span>▮▮▮▮</span>
+          </span>
+        </div>
+
+        <div class="screen-content">
+          <!-- Progress -->
+          <div class="progress-wrap mb-12">
+            <div class="progress-track">
+              <div class="progress-fill" style="width:40%;"></div>
+            </div>
+            <span class="progress-text">第 2 / 5 题</span>
           </div>
-          <span class="progress-text">第 2 题 / 共 5 题</span>
-        </div>
 
-        <!-- Question -->
-        <div class="quiz-question">
-          <h3>💬 你对价格敏感吗？</h3>
-          <span class="badge badge-accent">权重 ×3</span>
-        </div>
+          <!-- Question -->
+          <span class="badge badge-accent badge-lg mb-12" style="display:inline-flex;">权重 ×3</span>
+          <div class="page-title mb-12">你对价格<br>敏感吗？</div>
+          <div class="page-subtitle">拖动滑块为每个选项打分</div>
 
-        <hr class="divider">
+          <hr class="divider-dashed">
 
-        <!-- Sliders -->
-        <div class="quiz-sliders">
-          <div class="slider-group">
+          <!-- Sliders -->
+          <div class="slider-item">
             <span class="slider-label">🍲 火锅</span>
             <input type="range" min="1" max="5" value="2">
             <span class="slider-score">2</span>
           </div>
-          <div class="slider-group">
+          <div class="slider-item">
             <span class="slider-label">🥩 烧烤</span>
             <input type="range" min="1" max="5" value="3">
             <span class="slider-score">3</span>
           </div>
-          <div class="slider-group">
+          <div class="slider-item">
             <span class="slider-label">🍣 日料</span>
             <input type="range" min="1" max="5" value="5">
-            <span class="slider-score" style="background:rgba(6,182,212,0.15);color:#67E8F9;">5</span>
+            <span class="slider-score high">5</span>
           </div>
-          <div class="slider-group">
+          <div class="slider-item">
             <span class="slider-label">🥗 沙拉</span>
             <input type="range" min="1" max="5" value="5">
-            <span class="slider-score" style="background:rgba(6,182,212,0.15);color:#67E8F9;">5</span>
+            <span class="slider-score high">5</span>
+          </div>
+
+          <div style="text-align:center;font-size:0.7rem;color:var(--gray-mid);font-weight:600;margin-top:4px;display:flex;justify-content:space-between;">
+            <span>1 = 非常不符合</span>
+            <span>5 = 非常符合</span>
+          </div>
+
+          <!-- Nav -->
+          <div class="mt-24" style="display:flex;justify-content:space-between;">
+            <button class="btn btn-ghost btn-sm">← 上一题</button>
+            <button class="btn btn-primary">下一题 →</button>
           </div>
         </div>
 
-        <div style="text-align:center;margin-top:6px;font-size:0.75rem;color:var(--text-muted);display:flex;justify-content:space-between;max-width:460px;margin-left:auto;margin-right:auto;">
-          <span>1 = 非常不符合</span>
-          <span>5 = 非常符合</span>
+        <div class="bottom-nav">
+          <div class="nav-item">
+            <span class="nav-icon">🏠</span> 首页
+          </div>
+          <div class="nav-item active">
+            <span class="nav-icon">📝</span> 决策
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📋</span> 历史
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">⚙</span> 设置
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz last question (button says "查看结果") -->
+      <div class="phone-frame">
+        <div class="status-bar">
+          <span>9:43</span>
+          <span class="status-icons">
+            <span class="status-dot"></span>
+            <span class="status-dot" style="width:4px;"></span>
+            <span>▮▮▮▮</span>
+          </span>
         </div>
 
-        <div class="quiz-nav">
-          <button class="btn btn-secondary">← 上一题</button>
-          <button class="btn btn-primary">下一题 →</button>
+        <div class="screen-content">
+          <div class="progress-wrap mb-12">
+            <div class="progress-track">
+              <div class="progress-fill" style="width:100%;"></div>
+            </div>
+            <span class="progress-text">第 5 / 5 题</span>
+          </div>
+
+          <span class="badge badge-accent badge-lg mb-12" style="display:inline-flex;">权重 ×1</span>
+          <div class="page-title mb-12">最后一道题：<br>环境重要吗？</div>
+          <div class="page-subtitle">答完就能看到结果啦 ✨</div>
+
+          <hr class="divider-dashed">
+
+          <div class="slider-item">
+            <span class="slider-label">🍲 火锅</span>
+            <input type="range" min="1" max="5" value="3">
+            <span class="slider-score">3</span>
+          </div>
+          <div class="slider-item">
+            <span class="slider-label">🥩 烧烤</span>
+            <input type="range" min="1" max="5" value="4">
+            <span class="slider-score">4</span>
+          </div>
+          <div class="slider-item">
+            <span class="slider-label">🍣 日料</span>
+            <input type="range" min="1" max="5" value="3">
+            <span class="slider-score">3</span>
+          </div>
+          <div class="slider-item">
+            <span class="slider-label">🥗 沙拉</span>
+            <input type="range" min="1" max="5" value="3">
+            <span class="slider-score">3</span>
+          </div>
+
+          <div class="mt-24" style="display:flex;justify-content:space-between;">
+            <button class="btn btn-ghost btn-sm">← 上一题</button>
+            <button class="btn btn-pink" style="font-size:0.92rem;padding:12px 30px;">✨ 查看结果</button>
+          </div>
+        </div>
+
+        <div class="bottom-nav">
+          <div class="nav-item">
+            <span class="nav-icon">🏠</span> 首页
+          </div>
+          <div class="nav-item active">
+            <span class="nav-icon">📝</span> 决策
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📋</span> 历史
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">⚙</span> 设置
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ======================== 3. RESULT ======================== -->
-  <section class="page-section" id="page-result">
+  <section class="page-section">
     <div class="section-label">
       <span class="dot"></span>
       <h2>页面 3 · 结果页</h2>
       <span class="state-tag">沙拉胜出</span>
     </div>
 
-    <div class="page-row single">
-      <div class="card">
+    <div class="phone-frame wide">
+      <div class="status-bar">
+        <span>9:43</span>
+        <span class="status-icons">
+          <span class="status-dot"></span>
+          <span class="status-dot" style="width:4px;"></span>
+          <span>▮▮▮▮</span>
+        </span>
+      </div>
+
+      <div class="screen-content">
         <!-- Hero -->
         <div class="result-hero">
           <div class="result-icon">🏆</div>
-          <div class="result-winner">沙拉</div>
-          <div class="result-score">加权总分：22 分</div>
+          <div class="result-winner">🥗 沙拉</div>
+          <div class="result-score">加权总分 · 22 分</div>
         </div>
 
         <!-- Reason -->
         <div class="reason-box">
-          <strong style="color:var(--text-primary);">推荐理由：</strong>
-          在 4 个选项中，<strong style="color:#A5B4FC;">沙拉</strong> 综合得分最高（22 分），
-          尤其在<strong style="color:#67E8F9;">「价格敏感度」</strong>方面表现突出（5 分）。
+          <strong>📝 推荐理由</strong><br>
+          在 4 个选项中，<strong>沙拉</strong> 综合得分最高（22 分），
+          尤其在<strong>「价格敏感度」</strong>方面表现突出（5 分）。
           相比第二名日料（21 分）差距不大，可凭直觉微调。
         </div>
 
@@ -886,66 +1152,94 @@ body {
           <canvas id="chartResult"></canvas>
         </div>
 
-        <!-- Score detail (collapsible mock) -->
-        <details style="cursor:pointer;margin-top:8px;">
-          <summary style="color:var(--text-secondary);font-size:0.85rem;">▼ 得分明细</summary>
-          <table class="score-table" style="margin-top:12px;">
-            <thead>
-              <tr>
-                <th style="text-align:left;">问题（权重）</th>
-                <th>火锅</th><th>烧烤</th><th>日料</th><th>沙拉</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="text-align:left;">价格敏感吗？（×3）</td>
-                <td>2</td><td>3</td><td>5</td><td class="highlight">5</td>
-              </tr>
-              <tr>
-                <td style="text-align:left;">口味重要吗？（×2）</td>
-                <td class="highlight">5</td><td>4</td><td>2</td><td>2</td>
-              </tr>
-              <tr>
-                <td style="text-align:left;">环境重要吗？（×1）</td>
-                <td>3</td><td>4</td><td>3</td><td>3</td>
-              </tr>
-              <tr style="font-weight:700;color:var(--text-primary);">
-                <td style="text-align:left;">加权总分</td>
-                <td>19</td><td>21</td><td>21</td><td class="highlight">22</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Score detail -->
+        <details>
+          <summary>▼ 点击展开得分明细</summary>
+          <div class="admin-table-wrap">
+            <table class="score-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left;">问题（权重）</th>
+                  <th>火锅</th><th>烧烤</th><th>日料</th><th>沙拉</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align:left;">价格敏感吗？（×3）</td>
+                  <td>2</td><td>3</td><td>5</td><td class="highlight">5</td>
+                </tr>
+                <tr>
+                  <td style="text-align:left;">口味重要吗？（×2）</td>
+                  <td class="highlight">5</td><td>4</td><td>2</td><td>2</td>
+                </tr>
+                <tr>
+                  <td style="text-align:left;">环境重要吗？（×1）</td>
+                  <td>3</td><td>4</td><td>3</td><td>3</td>
+                </tr>
+                <tr style="font-weight:800;">
+                  <td style="text-align:left;">加权总分</td>
+                  <td>19</td><td>21</td><td>21</td><td class="highlight">22</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </details>
 
-        <div class="result-actions">
-          <button class="btn btn-secondary">🔄 重新开始</button>
+        <!-- Actions -->
+        <div class="mt-20" style="display:flex;gap:12px;justify-content:center;">
+          <button class="btn btn-ghost btn-sm">🔄 重新开始</button>
           <button class="btn btn-primary">💾 保存到历史</button>
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item">
+          <span class="nav-icon">🏠</span> 首页
+        </div>
+        <div class="nav-item active">
+          <span class="nav-icon">📝</span> 决策
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">📋</span> 历史
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">⚙</span> 设置
         </div>
       </div>
     </div>
   </section>
 
   <!-- ======================== 4. HISTORY ======================== -->
-  <section class="page-section" id="page-history">
+  <section class="page-section">
     <div class="section-label">
       <span class="dot"></span>
       <h2>页面 4 · 历史记录</h2>
       <span class="state-tag">最近 10 次</span>
     </div>
 
-    <div class="page-row single">
-      <div class="card">
-        <div class="card-title">📋 历史决策</div>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span>9:44</span>
+        <span class="status-icons">
+          <span class="status-dot"></span>
+          <span class="status-dot" style="width:4px;"></span>
+          <span>▮▮▮▮</span>
+        </span>
+      </div>
 
-        <div class="history-list">
+      <div class="screen-content">
+        <div class="page-title mb-12">📋 历史记录</div>
+        <div class="page-subtitle">最近做出的选择，点击可查看详情</div>
+
+        <div class="history-list mt-20">
           <div class="history-item">
             <div class="history-meta">
               <span class="history-time">2026-06-10 14:32</span>
               <span class="history-options">火锅、烧烤、日料、沙拉</span>
             </div>
             <div class="history-result">
-              🏆 沙拉
-              <a class="btn btn-ghost btn-xs">查看详情 →</a>
+              <span class="crown">🏆</span> 沙拉
+              <button class="btn btn-xs btn-ghost">→</button>
             </div>
           </div>
 
@@ -955,8 +1249,8 @@ body {
               <span class="history-options">爬山、看电影、逛商场、宅家</span>
             </div>
             <div class="history-result">
-              🏆 爬山
-              <a class="btn btn-ghost btn-xs">查看详情 →</a>
+              <span class="crown">🏆</span> 爬山
+              <button class="btn btn-xs btn-ghost">→</button>
             </div>
           </div>
 
@@ -966,8 +1260,8 @@ body {
               <span class="history-options">商品A、商品B、商品C</span>
             </div>
             <div class="history-result">
-              🏆 商品B
-              <a class="btn btn-ghost btn-xs">查看详情 →</a>
+              <span class="crown">🏆</span> 商品B
+              <button class="btn btn-xs btn-ghost">→</button>
             </div>
           </div>
 
@@ -977,158 +1271,217 @@ body {
               <span class="history-options">成都、大理、三亚、西安</span>
             </div>
             <div class="history-result">
-              🏆 大理
-              <a class="btn btn-ghost btn-xs">查看详情 →</a>
+              <span class="crown">🏆</span> 大理
+              <button class="btn btn-xs btn-ghost">→</button>
             </div>
           </div>
         </div>
 
-        <div class="history-actions-row">
-          <button class="btn btn-secondary btn-sm">📥 导出 JSON</button>
-          <button class="btn btn-secondary btn-sm">📥 导出 CSV</button>
-          <button class="btn btn-ghost btn-sm danger" style="margin-left:auto;color:var(--red);">🗑 清空历史</button>
+        <!-- Export & clear -->
+        <div class="mt-24" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-sm">📥 JSON</button>
+          <button class="btn btn-sm">📥 CSV</button>
+          <button class="btn btn-sm btn-ghost" style="margin-left:auto;color:#D94A3A;">🗑 清空</button>
         </div>
+      </div>
 
-        <div style="text-align:center;margin-top:20px;">
-          <a class="btn btn-ghost btn-sm" href="#page-home">← 返回首页</a>
+      <div class="bottom-nav">
+        <div class="nav-item">
+          <span class="nav-icon">🏠</span> 首页
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">📝</span> 决策
+        </div>
+        <div class="nav-item active">
+          <span class="nav-icon">📋</span> 历史
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">⚙</span> 设置
         </div>
       </div>
     </div>
   </section>
 
   <!-- ======================== 5. ADMIN ======================== -->
-  <section class="page-section" id="page-admin">
+  <section class="page-section">
     <div class="section-label">
       <span class="dot"></span>
-      <h2>页面 5 · 管理页</h2>
-      <span class="state-tag">需密码进入</span>
+      <h2>页面 5 · 管理页 + 密码验证</h2>
+      <span class="state-tag">管理员专属</span>
     </div>
 
-    <div class="page-row single">
-      <div class="card">
-        <div class="card-title">⚙ 问题库管理</div>
+    <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;">
 
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>问题文本</th>
-                <th>权重</th>
-                <th>启用</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>你对价格敏感吗？</td>
-                <td><span class="weight-badge weight-3">×3</span></td>
-                <td><span class="toggle on"></span></td>
-                <td>
-                  <span class="action-link">编辑</span>
-                  <span class="action-link danger">删除</span>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>口味对你来说有多重要？</td>
-                <td><span class="weight-badge weight-2">×2</span></td>
-                <td><span class="toggle on"></span></td>
-                <td>
-                  <span class="action-link">编辑</span>
-                  <span class="action-link danger">删除</span>
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>用餐环境和服务重要吗？</td>
-                <td><span class="weight-badge weight-1">×1</span></td>
-                <td><span class="toggle"></span></td>
-                <td>
-                  <span class="action-link">编辑</span>
-                  <span class="action-link danger">删除</span>
-                </td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>距离远近会影响你的选择吗？</td>
-                <td><span class="weight-badge weight-2">×2</span></td>
-                <td><span class="toggle on"></span></td>
-                <td>
-                  <span class="action-link">编辑</span>
-                  <span class="action-link danger">删除</span>
-                </td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>健康/卡路里对你重要吗？</td>
-                <td><span class="weight-badge weight-1">×1</span></td>
-                <td><span class="toggle"></span></td>
-                <td>
-                  <span class="action-link">编辑</span>
-                  <span class="action-link danger">删除</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- Password modal -->
+      <div class="phone-frame">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="status-icons">
+            <span class="status-dot"></span>
+            <span class="status-dot" style="width:4px;"></span>
+            <span>▮▮▮▮</span>
+          </span>
         </div>
 
-        <!-- Add form -->
-        <div class="add-form">
-          <div class="field" style="flex:1;">
-            <label>新问题</label>
-            <input type="text" placeholder="输入问题文本..." style="width:100%;">
-          </div>
-          <div class="field">
-            <label>权重</label>
-            <input type="text" value="2" class="weight-input">
-          </div>
-          <button class="btn btn-primary btn-sm">+ 添加</button>
-        </div>
+        <div class="screen-content" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;text-align:center;">
+          <div style="font-size:3rem;margin-bottom:8px;">🔐</div>
+          <div class="page-title" style="text-align:center;">管理员验证</div>
+          <div class="page-subtitle" style="text-align:center;margin-bottom:20px;">请输入密码进入管理页面</div>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px;">
-          <a class="btn btn-ghost btn-sm" href="#page-home">← 返回首页</a>
-          <button class="btn btn-primary">💾 保存修改</button>
-        </div>
-      </div>
-    </div>
+          <input class="input" type="password" value="admin" style="text-align:center;max-width:240px;">
 
-    <!-- Password modal (shown as static overlay) -->
-    <div style="margin-top:28px;">
-      <div class="section-label">
-        <span class="dot"></span>
-        <span style="font-size:0.85rem;color:var(--text-secondary);">入口状态：管理员密码验证</span>
-      </div>
-
-      <div style="display:flex;justify-content:center;">
-        <div class="modal-box" style="position:static;">
-          <div style="font-size:2rem;margin-bottom:8px;">🔐</div>
-          <h3>管理员验证</h3>
-          <p style="color:var(--text-secondary);font-size:0.84rem;margin-bottom:18px;">
-            请输入管理员密码以进入管理页面
-          </p>
-          <input class="input" type="password" placeholder="输入密码" value="admin" style="text-align:center;">
           <div style="display:flex;gap:10px;margin-top:16px;">
-            <button class="btn btn-secondary" style="flex:1;">取消</button>
-            <button class="btn btn-primary" style="flex:1;">验证</button>
+            <button class="btn btn-ghost btn-sm">取消</button>
+            <button class="btn btn-primary btn-sm">验证 →</button>
           </div>
-          <p style="color:var(--text-muted);font-size:0.72rem;margin-top:14px;">
-            默认密码：admin · 5 次错误将锁定 5 分钟
+
+          <p style="color:var(--gray-mid);font-size:0.7rem;margin-top:16px;font-weight:500;">
+            默认密码 admin · 5次错误锁定5分钟
           </p>
+        </div>
+
+        <div class="bottom-nav">
+          <div class="nav-item">
+            <span class="nav-icon">🏠</span> 首页
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📝</span> 决策
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📋</span> 历史
+          </div>
+          <div class="nav-item active">
+            <span class="nav-icon">⚙</span> 设置
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin panel -->
+      <div class="phone-frame wide">
+        <div class="status-bar">
+          <span>9:45</span>
+          <span class="status-icons">
+            <span class="status-dot"></span>
+            <span class="status-dot" style="width:4px;"></span>
+            <span>▮▮▮▮</span>
+          </span>
+        </div>
+
+        <div class="screen-content">
+          <div class="page-title mb-12">⚙ 问题库管理</div>
+          <div class="page-subtitle">增删改查问题，调整权重与启用状态</div>
+
+          <div class="admin-table-wrap mt-20">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>问题文本</th>
+                  <th>权重</th>
+                  <th>启用</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td style="font-weight:700;">你对价格敏感吗？</td>
+                  <td><span class="weight-badge weight-3">×3</span></td>
+                  <td><span class="toggle on"></span></td>
+                  <td>
+                    <span class="action-link">编辑</span>
+                    <span class="action-link danger">删除</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td style="font-weight:700;">口味对你来说有多重要？</td>
+                  <td><span class="weight-badge weight-2">×2</span></td>
+                  <td><span class="toggle on"></span></td>
+                  <td>
+                    <span class="action-link">编辑</span>
+                    <span class="action-link danger">删除</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td style="font-weight:700;">用餐环境和服务重要吗？</td>
+                  <td><span class="weight-badge weight-1">×1</span></td>
+                  <td><span class="toggle"></span></td>
+                  <td>
+                    <span class="action-link">编辑</span>
+                    <span class="action-link danger">删除</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td style="font-weight:700;">距离远近会影响你吗？</td>
+                  <td><span class="weight-badge weight-2">×2</span></td>
+                  <td><span class="toggle on"></span></td>
+                  <td>
+                    <span class="action-link">编辑</span>
+                    <span class="action-link danger">删除</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td style="font-weight:700;">健康/卡路里重要吗？</td>
+                  <td><span class="weight-badge weight-1">×1</span></td>
+                  <td><span class="toggle"></span></td>
+                  <td>
+                    <span class="action-link">编辑</span>
+                    <span class="action-link danger">删除</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Add form -->
+          <div class="add-form">
+            <div class="field" style="flex:1;">
+              <label>新问题</label>
+              <input type="text" placeholder="输入问题文本..." style="width:100%;">
+            </div>
+            <div class="field">
+              <label>权重</label>
+              <input type="text" value="2" class="weight-input">
+            </div>
+            <button class="btn btn-primary btn-sm">+ 添加</button>
+          </div>
+
+          <div class="mt-24" style="display:flex;justify-content:space-between;align-items:center;">
+            <button class="btn btn-ghost btn-sm">← 返回首页</button>
+            <button class="btn btn-primary">💾 保存修改</button>
+          </div>
+        </div>
+
+        <div class="bottom-nav">
+          <div class="nav-item">
+            <span class="nav-icon">🏠</span> 首页
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📝</span> 决策
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📋</span> 历史
+          </div>
+          <div class="nav-item active">
+            <span class="nav-icon">⚙</span> 设置
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ======================== FOOTER ======================== -->
-  <div style="text-align:center;padding:48px 0 24px;color:var(--text-muted);font-size:0.78rem;">
-    🎯 选择困难终结 · Design Demo · 纯静态展示（配色 / 组件 / 布局 / 状态）
+  <!-- Footer -->
+  <div class="demo-footer">
+    🎯 选择困难终结 · 暖色手绘 · 粗黑描边 · 纯静态 Demo（配色 / 组件 / 布局 / 状态展示）
   </div>
 
 </div>
 
-<!-- ======================== CHART INIT ======================== -->
+<!-- ======================== CHART ======================== -->
 <script>
 (function() {
   const ctx = document.getElementById('chartResult');
@@ -1142,18 +1495,13 @@ body {
         label: '加权总分',
         data: [19, 21, 21, 22],
         backgroundColor: [
-          'rgba(99,102,241,0.55)',
-          'rgba(99,102,241,0.55)',
-          'rgba(99,102,241,0.55)',
-          'rgba(6,182,212,0.75)'
+          '#FFF6D5',
+          '#FFF6D5',
+          '#FFF6D5',
+          '#FFEDB3'
         ],
-        borderColor: [
-          'rgba(99,102,241,0.8)',
-          'rgba(99,102,241,0.8)',
-          'rgba(99,102,241,0.8)',
-          'rgba(6,182,212,1)'
-        ],
-        borderWidth: 1.5,
+        borderColor: '#1A1A1A',
+        borderWidth: 2.5,
         borderRadius: 8,
         borderSkipped: false,
         barPercentage: 0.55,
@@ -1166,38 +1514,40 @@ body {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#1A1F2E',
-          titleColor: '#F1F3F9',
-          bodyColor: '#9CA3AF',
-          borderColor: 'rgba(255,255,255,0.1)',
-          borderWidth: 1,
+          backgroundColor: '#FFFBF5',
+          titleColor: '#1A1A1A',
+          bodyColor: '#3A3A3A',
+          borderColor: '#1A1A1A',
+          borderWidth: 2,
           padding: 12,
           displayColors: false,
+          titleFont: { weight: 'bold' },
+          bodyFont: { weight: 'bold' },
           callbacks: {
-            label: ctx => `得分：${ctx.raw} 分`
+            label: ctx => '得分：' + ctx.raw + ' 分'
           }
         }
       },
       scales: {
         x: {
-          ticks: { color: '#9CA3AF', font: { size: 13 } },
+          ticks: { color: '#3A3A3A', font: { size: 13, weight: 'bold' } },
           grid: { display: false },
-          border: { color: 'rgba(255,255,255,0.06)' }
+          border: { color: '#1A1A1A', width: 2 }
         },
         y: {
           beginAtZero: true,
           max: 30,
           ticks: {
-            color: '#5B6270',
-            font: { size: 11 },
+            color: '#7A7A7A',
+            font: { size: 11, weight: 'bold' },
             stepSize: 5,
             callback: v => v + ' 分'
           },
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          border: { color: 'rgba(255,255,255,0.06)' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          border: { color: '#1A1A1A', width: 2 }
         }
       },
-      animation: { duration: 600, easing: 'easeOutQuart' }
+      animation: { duration: 800, easing: 'easeOutBounce' }
     }
   });
 })();
